@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  database:
+    image: "postgres" # use latest official postgres version
+    environment:
+      POSTGRES_USER: studios
+      POSTGRES_PASSWORD: studios
+      POSTGRES_DB: studios
+    ports:
+      - '5432:5432'
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
