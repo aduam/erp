@@ -2,10 +2,6 @@ const sequelize = require('../connection')
 const Sequelize = require('sequelize')
 
 const Organization = sequelize.define('organizations', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-  },
   name: {
     type: Sequelize.STRING(256),
     allowNull: false,

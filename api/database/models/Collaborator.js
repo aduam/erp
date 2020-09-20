@@ -2,10 +2,6 @@ const sequelize = require('../connection')
 const Sequelize = require('sequelize')
 
 const Collaborator = sequelize.define('collaborators', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true
-  },
   names: {
     type: Sequelize.STRING(250),
     allowNull: false,

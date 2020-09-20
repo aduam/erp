@@ -1,27 +1,14 @@
 const sequelize = require('../connection')
 const Sequelize = require('sequelize')
 
-const Market = sequelize.define('Market', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-  },
+const Market = sequelize.define('markets', {
   name: {
     type: Sequelize.STRING(256),
     allowNull: false,
   },
-  business_name: {
-    type: Sequelize.STRING(256),
-    allowNull: false,
-  },
-  social_reason: {
-    type: Sequelize.STRING(256),
-    allowNull: false,
-  },
-  nit: {
-    type: Sequelize.STRING(10),
-    allowNull: false,
-  },
+  business_name: Sequelize.STRING(256),
+  social_reason: Sequelize.STRING(256),
+  nit: Sequelize.STRING(10),
   address: {
     type: Sequelize.TEXT,
     allowNull: false,
@@ -35,11 +22,14 @@ const Market = sequelize.define('Market', {
     allowNull: false,
   },
   photo: Sequelize.STRING(256),
+  id_organization: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
 }, {
   timestamps: true,
   paranoi: true,
   deleteAt: 'delete_at',
-  tableName: 'organizations',
   underscored: true,
 })
 

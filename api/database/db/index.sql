@@ -32,7 +32,7 @@ CREATE TABLE markets (
   phone VARCHAR(25) NOT NULL,
   mobile VARCHAR(25) NOT NULL,
   photo VARCHAR(256),
-  id_origanization INTEGER NOT NULL,
+  id_organization INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
