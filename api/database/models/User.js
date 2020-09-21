@@ -2,6 +2,10 @@ const sequelize = require('../connection')
 const Sequelize = require('sequelize')
 
 const User = sequelize.define('users', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+  },
   username: {
     type: Sequelize.STRING(50),
     allowNull: false,
@@ -11,8 +15,8 @@ const User = sequelize.define('users', {
     allowNull: false,
   },
 }, {
-  paranoid: true,
   timestamps: true,
+  paranoi: true,
   deleteAt: 'delete_at',
   underscored: true,
 })

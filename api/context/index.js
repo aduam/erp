@@ -13,6 +13,7 @@ const context = ctx => {
       error = e
     }
   }
+
   return { token, payload, error }
 }
 
