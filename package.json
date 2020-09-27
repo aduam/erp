@@ -17,6 +17,7 @@
     "apollo-server-micro": "^2.17.0",
     "apollo-upload-client": "^14.1.2",
     "bcrypt": "^5.0.0",
+    "clsx": "^1.1.1",
     "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
@@ -37,6 +38,7 @@
     "react-hook-form": "^6.8.3",
     "sequelize": "^6.3.5",
     "styled-components": "^5.2.0",
+    "sweetalert2": "^10.3.5",
     "uuidv4": "^6.2.3"
   },
   "devDependencies": {

@@ -11,6 +11,10 @@ import { LOGIN } from '../../mutations/me'
 const Container = styled.main`
   width: 100%;
   height: 100vh;
+  background-image: url('/img/login.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 `
 
 const Section = styled.section`
@@ -25,9 +29,11 @@ const Section = styled.section`
 
 const Form = styled.form`
   width: 400px;
-  padding: 15px;
+  padding: 30px 15px;
   display: flex;
   flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
 `
 
 const LoginView = () => {

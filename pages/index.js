@@ -6,7 +6,7 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Inicio</title>
+        <title>{`Inicio | ${process.env.NAME_BUSINESS}`}</title>
       </Head>
       <HomeView />
     </>

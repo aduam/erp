@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>{`Login | ${process.env.NAME_BUSINESS}`}</title>
       </Head>
       <LoginView />
     </>
