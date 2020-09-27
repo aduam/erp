@@ -9,8 +9,8 @@ const typeDefs = gql`
 
   type Mutation {
     login(username: String!, password: String!): Me
-    createOrganization(organization: OrganizationInput!): Organization
-    createMarket(market: MarketInput!): Market
+    createOrganization(organization: OrganizationInput!): Organization @auth
+    createMarket(market: MarketInput!): Market @auth
     createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!): Collaborator
     createRole(title: String!, description: String): Role
   }
