@@ -64,3 +64,59 @@ CREATE TABLE users (
   delete_at TIMESTAMP,
   FOREIGN KEY (id) REFERENCES collaborators (id)
 );
+
+CREATE TABLE type_products (
+  id SERIAL NOT NULL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP
+);
+
+CREATE TABLE providers (
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR(256) NOT NULL,
+  description TEXT,
+  business_name VARCHAR(256),
+  social_reason VARCHAR(256),
+  nit VARCHAR(10),
+  address TEXT,
+  phone VARCHAR(25),
+  mobile VARCHAR(25),
+  photo VARCHAR(256),
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP
+);
+
+/* CREATE TABLE creditors (
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR(256) NOT NULL,
+  description TEXT,
+  business_name VARCHAR(256),
+  social_reason VARCHAR(256),
+  nit VARCHAR(10),
+  address TEXT,
+  phone VARCHAR(25),
+  mobile VARCHAR(25),
+  photo VARCHAR(256),
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP
+); */
+
+CREATE TABLE products (
+  id SERIAL NOT NULL PRIMARY KEY,
+  title VARCHAR(100),
+  stock INTEGER NOT NULL,
+  min_stock INTEGER NOT NULL,
+  base_price FLOAT NOT NULL,
+  id_type_product INTEGER NOT NULL,
+  id_provide INTEGER,
+  FOREIGN KEY (id_type_product) REFERENCES type_products(id)
+);
+
+CREATE TABLE account_provider (
+  id SERIAL NOT NULL PRIMARY KEY,
+);
