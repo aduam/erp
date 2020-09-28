@@ -1,23 +1,55 @@
+import Router from 'next/router'
 import { Typography, Button, TextField } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput } from '../../components'
+import { CREATE_PROVIDER } from '../../mutations/provider'
 
-const CreateProviderView = () => {
+const CreateProviderView = ({ me }) => {
   const { register, handleSubmit } = useForm()
 
+  const [createProvider, { loading }] = useMutation(CREATE_PROVIDER, {
+    onCompleted: () => {
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Se ha creado el proveedor! redireccionando...',
+        showConfirmButton: false,
+        timer: 2000
+      })
+      setTimeout(() => {
+        Router.push('/proveedor')
+      }, 2000)
+    },
+    onError: () => {
+      Swal.fire({
+        position: 'bottom-end',
+        icon: 'error',
+        title: 'Hubo un error al crear el proveedor!',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    },
+  })
+
   const onSubmit = (data) => {
-    console.log(data)
+    const variables = {
+      provider: { ...data },
+      id_organization: me.id_organization
+    }
+    createProvider({ variables })
   }
 
   return (
     <Container>
-      <Typography variant="h1" color="secondary">Comprar</Typography>
+      <Typography variant="h1" color="secondary">Crear proveedor</Typography>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InnerForm>
           <WrapInput>
             <TextField
-              id="title"
-              name="title"
+              id="name"
+              name="name"
               label="Nombre"
               fullWidth
               inputRef={register}
@@ -88,7 +120,7 @@ const CreateProviderView = () => {
             />
           </WrapInput>
         </InnerForm>
-        <Button type="submit" variant="contained" color="secondary">Comprar</Button>
+        <Button type="submit" variant="contained" color="secondary">{loading ? 'Creando' : 'Crear'}</Button>
       </Form>
     </Container>
   )

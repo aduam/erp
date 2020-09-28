@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from '@material-ui/core'
 import {
   Menu,
@@ -144,33 +145,41 @@ const Layout = ({ children, router }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button onClick={() => Router.push('/')}>
-            <ListItemIcon>
-              <Home color={route === '/' ? 'secondary' : ''} />
-            </ListItemIcon>
-            <ListItemText primary="Inicio" />
-          </ListItem>
-          <ListItem button onClick={() => Router.push('/compras')}>
-            <ListItemIcon>
-              <Store color={route === '/compras' ? 'secondary' : ''} />
-            </ListItemIcon>
-            <ListItemText primary="Compras" />
-          </ListItem>
-          <ListItem button onClick={() => Router.push('/proveedor')}>
-            <ListItemIcon>
-              <Group color={route === '/proveedor' ? 'secondary' : ''} />
-            </ListItemIcon>
-            <ListItemText primary="Proveedores" />
-          </ListItem>
+          <Tooltip title="Inicio">
+            <ListItem button onClick={() => Router.push('/')}>
+              <ListItemIcon>
+                <Home color={route === '/' ? 'secondary' : ''} />
+              </ListItemIcon>
+              <ListItemText primary="Inicio" />
+            </ListItem>
+          </Tooltip>
+          <Tooltip title="Compras">
+            <ListItem button onClick={() => Router.push('/compras')}>
+              <ListItemIcon>
+                <Store color={route === '/compras' ? 'secondary' : ''} />
+              </ListItemIcon>
+              <ListItemText primary="Compras" />
+            </ListItem>
+          </Tooltip>
+          <Tooltip title="Proveedor">
+            <ListItem button onClick={() => Router.push('/proveedor')}>
+              <ListItemIcon>
+                <Group color={route === '/proveedor' ? 'secondary' : ''} />
+              </ListItemIcon>
+              <ListItemText primary="Proveedores" />
+            </ListItem>
+          </Tooltip>
         </List>
         <Divider />
         <List>
-          <ListItem button onClick={() => Router.push('/configuracion')}>
-            <ListItemIcon>
-              <Settings color={route === '/configuracion' ? 'secondary' : ''} />
-            </ListItemIcon>
-            <ListItemText primary="Configuraciones" />
-          </ListItem>
+          <Tooltip title="Configuración">
+            <ListItem button onClick={() => Router.push('/configuracion')}>
+              <ListItemIcon>
+                <Settings color={route === '/configuracion' ? 'secondary' : ''} />
+              </ListItemIcon>
+              <ListItemText primary="Configuraciones" />
+            </ListItem>
+          </Tooltip>
         </List>
       </Drawer>
       <main className={classes.content}>

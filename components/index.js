@@ -4,6 +4,9 @@ import {
   InnerForm,
   WrapInput,
   ContainerHeader,
+  LoaderPage,
+  ErrorPage,
+  WrapButtonActions,
 } from './styles'
 
 export {
@@ -12,4 +15,7 @@ export {
   InnerForm,
   WrapInput,
   ContainerHeader,
+  LoaderPage,
+  ErrorPage,
+  WrapButtonActions,
 }

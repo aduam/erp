@@ -9,10 +9,23 @@ const typeDefs = gql`
 
   type Mutation {
     login(username: String!, password: String!): Me
+
+    #Organization
     createOrganization(organization: OrganizationInput!): Organization @auth
+
+    #Market
     createMarket(market: MarketInput!): Market @auth
+
+    #Collaborator
     createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!): Collaborator
+
+    #Role
     createRole(title: String!, description: String): Role
+
+    #Provider
+    createProvider(provider: ProviderInput! market_id: Int, id_organization: Int!): Provider @auth
+    editProvider(provider: ProviderEditInput, id_provider: Int!, id_organization: Int!): Provider @auth
+    removeProvider(id: Int!): Provider @auth
   }
 
   type Organization {
@@ -28,6 +41,8 @@ const typeDefs = gql`
     create_at: Float
     markets: [Market]
     market(id: Int!): Market
+    providers: [Provider]
+    provider(id: Int!): Provider
   }
 
   type Market {
@@ -73,10 +88,24 @@ const typeDefs = gql`
     identification: String
     photo_profile: String
     active: Boolean
+    id_organization: Int
     role: Role
     user: User
     token: String
     refresh_token: String
+  }
+
+  type Provider {
+    id: Int
+    name: String
+    description: String
+    business_name: String
+    social_reason: String
+    nit: String
+    address: String
+    phone: String
+    mobile: String
+    photo: String
   }
 
   input OrganizationInput {
@@ -106,6 +135,30 @@ const typeDefs = gql`
     surnames: String!
     identification: String!
     photo_profile: String
+  }
+
+  input ProviderInput {
+    name: String!
+    description: String
+    business_name: String
+    social_reason: String
+    nit: String
+    address: String
+    phone: String
+    mobile: String
+    photo: String
+  }
+
+  input ProviderEditInput {
+    name: String!
+    description: String
+    business_name: String
+    social_reason: String
+    nit: String
+    address: String
+    phone: String
+    mobile: String
+    photo: String
   }
 `;
 

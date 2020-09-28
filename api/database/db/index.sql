@@ -36,7 +36,7 @@ CREATE TABLE markets (
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
-  FOREIGN KEY (id_origanization) REFERENCES organizations(id)
+  FOREIGN KEY (id_organization) REFERENCES organizations(id)
 );
 
 CREATE TABLE collaborators (
@@ -48,11 +48,13 @@ CREATE TABLE collaborators (
   active BOOLEAN NOT NULL,
   id_role INTEGER NOT NULL,
   id_market INTEGER,
+  id_organization INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
   FOREIGN KEY (id_role) REFERENCES roles (id),
-  FOREIGN KEY (id_market) REFERENCES markets (id)
+  FOREIGN KEY (id_market) REFERENCES markets (id),
+  FOREIGN KEY (id_organization) REFERENCES organizations(id)
 );
 
 CREATE TABLE users (
@@ -85,9 +87,11 @@ CREATE TABLE providers (
   phone VARCHAR(25),
   mobile VARCHAR(25),
   photo VARCHAR(256),
+  id_organization INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
-  delete_at TIMESTAMP
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_organization) REFERENCES organizations(id)
 );
 
 /* CREATE TABLE creditors (

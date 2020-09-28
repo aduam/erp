@@ -24,6 +24,10 @@ const Collaborator = sequelize.define('collaborators', {
     allowNull: false,
   },
   id_market: Sequelize.INTEGER,
+  id_organization: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 }, {
   timestamps: true,
   paranoi: true,

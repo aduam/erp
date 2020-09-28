@@ -22,8 +22,10 @@ const login = async (_, { username, password }, ctx) => {
 }
 
 const me = async (_, __, ctx) => {
-  const me = await User.findAll({ limit: 1 })
-  return me[0]
+  const userId = ctx.payload.id
+  console.log(ctx)
+  const me = await Collaborator.findOne({ where: { id: userId } })
+  return me
 }
 
 module.exports = {
