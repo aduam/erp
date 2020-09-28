@@ -14,7 +14,7 @@ import {
   Tooltip,
   Button,
 } from '@material-ui/core'
-import { DeleteForever, Edit } from '@material-ui/icons'
+import { DeleteForever, Edit, ShoppingCartOutlined } from '@material-ui/icons'
 import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
 import { REMOVE_PROVIDER } from '../../mutations/provider'
@@ -120,6 +120,11 @@ const TableProvider = ({ providers, id_organization }) => {
                     <Tooltip title="Editar">
                       <Button onClick={() => Router.push('/proveedor/editar/[id]', `/proveedor/editar/${element.id}`)}>
                         <Edit />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Comprar">
+                      <Button onClick={() => Router.push('/proveedor/comprar/[id]', `/proveedor/comprar/${element.id}`)}>
+                        <ShoppingCartOutlined />
                       </Button>
                     </Tooltip>
                   </WrapButtonActions>

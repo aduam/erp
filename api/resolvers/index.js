@@ -1,10 +1,11 @@
 const { UserInputError } = require('apollo-server-micro')
-const { Market, Role, Collaborator, User, Provider } = require('../database/models')
+const { Market, Role, Collaborator, User, Provider, Product, TypeProduct } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
+const { createTypeProduct, createProduct } = require('./product')
 
 const resolvers = {
   Query: {
@@ -20,6 +21,8 @@ const resolvers = {
     createProvider,
     removeProvider,
     editProvider,
+    createTypeProduct,
+    createProduct,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -42,12 +45,27 @@ const resolvers = {
       if (!providers) throw new UserInputError('No existen la tienda')
       return providers
     },
+    type_products: async ({ id }) => {
+      const type_products = await TypeProduct.findAll({ id_organization: id })
+      if (!type_products) throw new UserInputError('Error en el tipo de productos')
+      return type_products
+    },
   },
   Market: {
     collaborators: async ({ id }) => {
       const collaborators = await Collaborator.findAll({ where: { id_market: id } })
       if (!collaborators) throw new UserInputError('Error en colaboradores')
       return collaborators
+    },
+    products: async ({ id, id_organization }) => {
+      const products = await Product.findAll({ where: { id_market: id, id_organization } })
+      if (!products) throw new UserInputError('Error al buscar los productos')
+      return products
+    },
+    product: async ({ id, id_organization }, args) => {
+      const products = await Product.findOne({ where: { id_market: id, id_organization, id: args.id } })
+      if (!products) throw new UserInputError('Error al buscar los productos')
+      return products
     },
   },
   Collaborator: {

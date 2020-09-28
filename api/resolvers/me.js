@@ -8,7 +8,6 @@ const login = async (_, { username, password }, ctx) => {
   if (!me) throw new UserInputError('Usuario o contraseña incorrecta')
 
   const isUser = await bcrypt.compare(password, me.password)
-  console.log(isUser, password, me.password)
   if (!isUser) throw new UserInputError('Usuario o contraseña incorrecta')
 
   const collaborator = await Collaborator.findOne({ where: { id: me.id } })
@@ -23,7 +22,6 @@ const login = async (_, { username, password }, ctx) => {
 
 const me = async (_, __, ctx) => {
   const userId = ctx.payload.id
-  console.log(ctx)
   const me = await Collaborator.findOne({ where: { id: userId } })
   return me
 }

@@ -22,7 +22,7 @@ const BuyView = () => {
     <Container>
       <WrapButton>
         <Button fullWidth color="secondary" variant="contained" onClick={() => Router.push('/compras/comprar')}>
-          <Typography variant="button">Comprar</Typography>
+          <Typography variant="button">Autorizar compra</Typography>
         </Button>
       </WrapButton>
       <WrapButton>

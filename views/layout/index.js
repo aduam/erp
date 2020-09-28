@@ -24,6 +24,7 @@ import {
   Store,
   Settings,
   Group,
+  ImportContacts,
 } from '@material-ui/icons'
 
 const drawerWidth = 240
@@ -167,6 +168,14 @@ const Layout = ({ children, router }) => {
                 <Group color={route === '/proveedor' ? 'secondary' : ''} />
               </ListItemIcon>
               <ListItemText primary="Proveedores" />
+            </ListItem>
+          </Tooltip>
+          <Tooltip title="Productos">
+            <ListItem button onClick={() => Router.push('/producto')}>
+              <ListItemIcon>
+                <ImportContacts color={route === '/producto' ? 'secondary' : ''} />
+              </ListItemIcon>
+              <ListItemText primary="Productos" />
             </ListItem>
           </Tooltip>
         </List>

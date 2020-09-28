@@ -4,6 +4,8 @@ const User = require('./User')
 const Role = require('./Roles')
 const Collaborator = require('./Collaborator')
 const Provider = require('./Provider')
+const TypeProduct = require('./TypeProduct')
+const Product = require('./Product')
 
 module.exports = {
   Market,
@@ -12,4 +14,6 @@ module.exports = {
   Role,
   Collaborator,
   Provider,
+  TypeProduct,
+  Product,
 }

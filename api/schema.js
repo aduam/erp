@@ -14,7 +14,7 @@ const typeDefs = gql`
     createOrganization(organization: OrganizationInput!): Organization @auth
 
     #Market
-    createMarket(market: MarketInput!): Market @auth
+    createMarket(market: MarketInput!, id_organization: Int!): Market @auth
 
     #Collaborator
     createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!): Collaborator
@@ -26,6 +26,10 @@ const typeDefs = gql`
     createProvider(provider: ProviderInput! market_id: Int, id_organization: Int!): Provider @auth
     editProvider(provider: ProviderEditInput, id_provider: Int!, id_organization: Int!): Provider @auth
     removeProvider(id: Int!): Provider @auth
+
+    #Products
+    createTypeProduct(title: String!, description: String, id_organization: Int!): TypeProduct @auth
+    createProduct(product: ProductCreateInput!, id_type_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
   }
 
   type Organization {
@@ -43,6 +47,7 @@ const typeDefs = gql`
     market(id: Int!): Market
     providers: [Provider]
     provider(id: Int!): Provider
+    type_products: [TypeProduct]
   }
 
   type Market {
@@ -56,7 +61,22 @@ const typeDefs = gql`
     mobile: String
     photo: String
     collaborators: [Collaborator]
+    products: [Product]
+    product(id: Int!): Product
+    id_organization: Int
     create_at: Float
+  }
+
+  type Product {
+    id: Int
+    code: String
+    title: String
+    description: String
+    stock: Int
+    min_stock: Int
+    base_price: Float
+    price: Float
+    gain: Float
   }
 
   type Role {
@@ -68,6 +88,12 @@ const typeDefs = gql`
   type User {
     id: Int
     username: String
+  }
+
+  type TypeProduct {
+    id: Int
+    title: String
+    description: String
   }
 
   type Collaborator {
@@ -88,6 +114,7 @@ const typeDefs = gql`
     identification: String
     photo_profile: String
     active: Boolean
+    id_market: Int
     id_organization: Int
     role: Role
     user: User
@@ -159,6 +186,17 @@ const typeDefs = gql`
     phone: String
     mobile: String
     photo: String
+  }
+
+  input ProductCreateInput {
+    code: String
+    title: String!
+    description: String
+    stock: Int!
+    min_stock: Int!
+    base_price: Float!
+    price: Float
+    gain: Float
   }
 `;
 

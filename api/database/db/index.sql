@@ -71,9 +71,11 @@ CREATE TABLE type_products (
   id SERIAL NOT NULL PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
   description TEXT,
+  id_organization INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
-  delete_at TIMESTAMP
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_organization) REFERENCES organizations(id)
 );
 
 CREATE TABLE providers (
@@ -88,10 +90,12 @@ CREATE TABLE providers (
   mobile VARCHAR(25),
   photo VARCHAR(256),
   id_organization INTEGER NOT NULL,
+  id_market INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
-  FOREIGN KEY (id_organization) REFERENCES organizations(id)
+  FOREIGN KEY (id_organization) REFERENCES organizations(id),
+  FOREIGN KEY (id_market) REFERENCES markets(id)
 );
 
 /* CREATE TABLE creditors (
@@ -112,13 +116,25 @@ CREATE TABLE providers (
 
 CREATE TABLE products (
   id SERIAL NOT NULL PRIMARY KEY,
+  code VARCHAR(50),
   title VARCHAR(100),
+  description TEXT,
   stock INTEGER NOT NULL,
   min_stock INTEGER NOT NULL,
-  base_price FLOAT NOT NULL,
+  base_price NUMERIC(15,2) NOT NULL,
+  price NUMERIC(15,2),
+  gain NUMERIC(15,2),
   id_type_product INTEGER NOT NULL,
-  id_provide INTEGER,
-  FOREIGN KEY (id_type_product) REFERENCES type_products(id)
+  id_provider INTEGER NOT NULL,
+  id_organization INTEGER NOT NULL,
+  id_market INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_type_product) REFERENCES type_products(id),
+  FOREIGN KEY (id_provider) REFERENCES providers(id),
+  FOREIGN KEY (id_organization) REFERENCES organizations(id),
+  FOREIGN KEY (id_market) REFERENCES markets(id)
 );
 
 CREATE TABLE account_provider (

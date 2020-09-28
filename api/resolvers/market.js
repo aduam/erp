@@ -1,11 +1,11 @@
-const { ApolloError } = require('apollo-server-micro')
+const { UserInputError } = require('apollo-server-micro')
 const { Market, Organization } = require('../database/models')
 
 const createMarket = async (root, args, ctx) => {
-  const org = await Organization.findAll({ limit: 1 })
-  if (!org || org.length < 1) throw Error('No existe organización', '200')
-  const market = await Market.create({ ...args.market, id_organization: org[0].id })
-  if (!market) ApolloError('Error al crear la tienda', '200')
+  const org = await Organization.findOne({ id: args.id_organization })
+  if (!org) throw Error('No existe organización', '200')
+  const market = await Market.create({ ...args.market, id_organization: args.id_organization })
+  if (!market) throw new UserInputError('Error al crear la tienda')
   return market
 }
 

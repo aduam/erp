@@ -7,7 +7,7 @@ import { GET_PROVIDERS } from '../../queries/provider'
 const Provider = ({ me }) => {
   const { loading, error, data } = useQuery(GET_PROVIDERS, { variables: { id: me.id_organization }, fetchPolicy: 'network-only' })
   const providers = data && data.organization && data.organization.providers ? data.organization.providers : []
-  console.log('PROVIDERS::: ', providers)
+
   return (
     <>
       <Head>

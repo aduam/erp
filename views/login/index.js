@@ -62,7 +62,6 @@ const LoginView = () => {
       Router.push('/')
     },
     onError: (err) => {
-      console.log(err)
       handleOpenNotification('error', 'el usuario o contraseña están incorrectos')
     }
   })
