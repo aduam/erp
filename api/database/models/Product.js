@@ -17,10 +17,7 @@ const Product = sequelize.define('products', {
     type: Sequelize.DECIMAL,
     allowNull: false,
   },
-  price: {
-    type: Sequelize.DECIMAL,
-    allowNull: false,
-  },
+  price: Sequelize.DECIMAL,
   gain: Sequelize.DECIMAL,
   id_type_product: {
     type: Sequelize.INTEGER,

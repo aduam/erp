@@ -10,15 +10,23 @@ const ProviderBuy = ({ me }) => {
   const urlId = router.query.id
   const id = !!urlId && !!parseInt(urlId, 10) ? Math.abs(parseInt(urlId, 10)) : null
 
-  const { data } = useQuery(GET_TYPE_PRODUCTS, { variables: { id_organization: me.id_organization }})
+  const { loading, error, data } = useQuery(GET_TYPE_PRODUCTS, { variables: { id_organization: me.id_organization, id_provider: id } })
   const typeProducts = data && data.organization && data.organization.type_products ? data.organization.type_products : []
+  const provider = data && data.organization && data.organization.provider ? data.organization.provider : {}
 
   return (
     <>
       <Head>
         <title>{`Proveedor compras | ${process.env.NAME_BUSINESS}`}</title>
       </Head>
-      <ProvidersBuyView me={me} id_provider={id} type_products={typeProducts} />
+      <ProvidersBuyView
+        me={me}
+        id_provider={id}
+        type_products={typeProducts}
+        provider={provider}
+        isLoading={loading}
+        isError={error}
+      />
     </>
   )
 }

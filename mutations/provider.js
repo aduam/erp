@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_PROVIDER = gql`
-  mutation CreateProvider($provider: ProviderInput!, $market_id: Int, $id_organization: Int!) {
-    createProvider(provider: $provider, market_id: $market_id, id_organization: $id_organization) {
+  mutation CreateProvider($provider: ProviderInput!, $id_market: Int!, $id_organization: Int!) {
+    createProvider(provider: $provider, id_market: $id_market, id_organization: $id_organization) {
       id
       name
       description

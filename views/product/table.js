@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Nombre' },
   { id: 'description', numeric: true, disablePadding: false, label: 'Descripción' },
+  { id: 'disponible', numeric: true, disablePadding: false, label: 'En bodega' },
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
@@ -120,6 +121,7 @@ const TableProvider = ({ products, id_organization }) => {
                       {element.name}
                     </TableCell>
                     <TableCell>{element.description}</TableCell>
+                    <TableCell>{element.stock}</TableCell>
                     <TableCell>
                       <WrapButtonActions>
                         <Tooltip title="Eliminar">
@@ -163,7 +165,7 @@ const TableProvider = ({ products, id_organization }) => {
               </Typography>
             </Button>
           </>
-      )}
+        )}
     </>
   )
 }

@@ -5,7 +5,7 @@ const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
-const { createTypeProduct, createProduct } = require('./product')
+const { createTypeProduct, createProduct, updateStock } = require('./product')
 
 const resolvers = {
   Query: {
@@ -23,6 +23,7 @@ const resolvers = {
     editProvider,
     createTypeProduct,
     createProduct,
+    updateStock,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -91,7 +92,14 @@ const resolvers = {
       if (!user) throw new UserInputError('Error en el usuario')
       return user
     },
-  }
+  },
+  Provider: {
+    products: async ({ id }) => {
+      const products = await Product.findAll({ where: { id_provider: id } })
+      if (!products) throw new UserInputError('Error en los productos')
+      return products
+    },
+  },
 }
 
 module.exports = resolvers

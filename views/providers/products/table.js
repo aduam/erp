@@ -16,9 +16,9 @@ import {
 } from '@material-ui/core'
 import { DeleteForever, Edit, Visibility } from '@material-ui/icons'
 import Swal from 'sweetalert2'
-import { WrapButtonActions } from '../../components'
-import { REMOVE_PROVIDER } from '../../mutations/provider'
-import { GET_PROVIDERS } from '../../queries/provider'
+import { WrapButtonActions } from '../../../components'
+import { REMOVE_PROVIDER } from '../../../mutations/provider'
+import { GET_PROVIDERS } from '../../../queries/provider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Nombre' },
   { id: 'description', numeric: true, disablePadding: false, label: 'Descripción' },
+  { id: 'bodega', numeric: true, disablePadding: false, label: 'Disponible' },
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
@@ -62,7 +63,7 @@ const updateCache = (client, { data: { removeProvider } }, id) => {
   })
 }
 
-const TableProvider = ({ providers, id_organization }) => {
+const TableProvider = ({ products, id_organization, modal }) => {
   const classes = useStyles();
 
   const [removeProvider] = useMutation(REMOVE_PROVIDER, {
@@ -78,7 +79,8 @@ const TableProvider = ({ providers, id_organization }) => {
   const handleDelete = (e, provider) => {
     e.stopPropagation()
     Swal.fire({
-      title: `¿Estás seguro que quieres eliminar el proveedor "${provider.name}"?`,
+      title: `¿Estás seguro que quieres eliminar el producto "${provider.title}"?`,
+      text: '**Esta acción no se puede deshacer**',
       showCancelButton: true,
       confirmButtonText: `Eliminar`,
     }).then((result) => {
@@ -104,12 +106,13 @@ const TableProvider = ({ providers, id_organization }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {providers.map((element) => (
+            {products.map((element) => (
               <TableRow hover key={element.id}>
                 <TableCell>
-                  {element.name}
+                  {element.title}
                 </TableCell>
                 <TableCell>{element.description}</TableCell>
+                <TableCell>{element.stock}</TableCell>
                 <TableCell>
                   <WrapButtonActions>
                     <Tooltip title="Eliminar">
@@ -122,8 +125,8 @@ const TableProvider = ({ providers, id_organization }) => {
                         <Edit />
                       </Button>
                     </Tooltip>
-                    <Tooltip title="Ver productos">
-                      <Button onClick={() => Router.push('/proveedor/producto/[id]', `/proveedor/producto/${element.id}`)}>
+                    <Tooltip title="Comprar">
+                      <Button onClick={() => modal(element)}>
                         <Visibility />
                       </Button>
                     </Tooltip>

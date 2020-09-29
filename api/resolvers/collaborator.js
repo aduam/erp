@@ -3,7 +3,7 @@ const { Collaborator, Role, User } = require('../database/models')
 
 const createCollaborator = async (_, args, ctx) => {
   const SALT = 7
-  const collaborator = await Collaborator.create({ ...args.collaborator, id_role: args.id_role, id_market: args.id_market, active: true })
+  const collaborator = await Collaborator.create({ ...args.collaborator, id_role: args.id_role, id_market: args.id_market, active: true, id_organization: args.id_organization })
   if (!collaborator) throw Error('Error al crear el colaborador')
   const pass = await bcrypt.hash(args.username, SALT)
   const user = await User.create({ id: collaborator.id, username: args.username, password: pass })

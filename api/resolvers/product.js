@@ -11,20 +11,22 @@ const createTypeProduct = async (_, args) => {
 
 const createProduct = async (_, args) => {
   const { id_type_product, id_provider, id_organization, id_market } = args
-  console.log('args', args)
-  console.log('variables: ', { ...args.product, id_type_product, id_provider, id_organization, id_market })
-  let product
-  try {
-    product = await Product.create({ ...args.product, id_type_product, id_provider, id_organization, id_market })
-  } catch (error) {
-    console.log(error)
-  }
+  const product = await Product.create({ ...args.product, id_type_product, id_provider, id_organization, id_market })
   if (!product) throw new UserInputError('Error al crear el producto')
-  console.log(product)
   return product
+}
+
+const updateStock = async (_, args) => {
+  const { id_product, id_organization, id_market, id_provider, amount } = args
+  const product = await Product.findOne({ where: { id: id_product, id_organization, id_market, id_provider } })
+  if (!product) throw new UserInputError('Producto no existe')
+  const stock = product.stock + amount
+  await product.update({ stock })
+  return product.reload()
 }
 
 module.exports = {
   createTypeProduct,
   createProduct,
+  updateStock,
 }

@@ -36,7 +36,8 @@ const CreateProviderView = ({ me }) => {
   const onSubmit = (data) => {
     const variables = {
       provider: { ...data },
-      id_organization: me.id_organization
+      id_organization: me.id_organization,
+      id_market: me.id_market,
     }
     createProvider({ variables })
   }

@@ -5,10 +5,10 @@ import { Autocomplete } from '@material-ui/lab'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
-import { Container, Form, InnerForm, WrapInput } from '../../components'
+import { Container, Form, InnerForm, WrapInput, ErrorPage, LoaderPage } from '../../components'
 import { CREATE_PRODUCT } from '../../mutations/product'
 
-const ProviderBuyView = ({ me, type_products, id_provider }) => {
+const ProviderBuyView = ({ me, type_products, id_provider, provider, isLoading, isError }) => {
   const { register, handleSubmit } = useForm()
   const [getType, setType] = useState(null)
 
@@ -36,6 +36,14 @@ const ProviderBuyView = ({ me, type_products, id_provider }) => {
     },
   })
 
+  if (isLoading) {
+    return <LoaderPage>Cargando...</LoaderPage>
+  }
+
+  if (isError) {
+    return <LoaderPage>Error cargando la página...</LoaderPage>
+  }
+
   const defaultProps = {
     options: type_products,
     getOptionLabel: (option) => option.title,
@@ -56,13 +64,12 @@ const ProviderBuyView = ({ me, type_products, id_provider }) => {
       id_type_product: getType,
       id_market: me.id_market,
     }
-    console.log(variables)
     createProduct({ variables })
   }
 
   return (
     <Container>
-      <Typography variant="h1" color="secondary">Crear producto</Typography>
+      <Typography variant="h1" color="secondary">{`Crear producto ${provider.name}`}</Typography>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InnerForm>
           <WrapInput>
@@ -96,15 +103,15 @@ const ProviderBuyView = ({ me, type_products, id_provider }) => {
             />
           </WrapInput>
           <WrapInput>
-          <TextField
-            inputRef={register}
-            id="min_stock"
-            name="min_stock"
-            label="Mínimo en bodega"
-            fullWidth
-            required
-            type="number"
-          />
+            <TextField
+              inputRef={register}
+              id="min_stock"
+              name="min_stock"
+              label="Mínimo en bodega"
+              fullWidth
+              required
+              type="number"
+            />
           </WrapInput>
           <WrapInput>
             <FormControl fullWidth>
@@ -138,13 +145,13 @@ const ProviderBuyView = ({ me, type_products, id_provider }) => {
             </FormControl>
           </WrapInput>
           <WrapInput>
-          <TextField
-            id="code"
-            name="code"
-            label="Código"
-            inputRef={register}
-            fullWidth
-          />
+            <TextField
+              id="code"
+              name="code"
+              label="Código"
+              inputRef={register}
+              fullWidth
+            />
           </WrapInput>
           <WrapInput>
             <Autocomplete

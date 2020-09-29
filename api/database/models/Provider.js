@@ -17,6 +17,10 @@ const Provider = sequelize.define('providers', {
   id_organization: {
     type: Sequelize.INTEGER,
     allowNull: false,
+  },
+  id_market: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
   }
 }, {
   timestamps: true,

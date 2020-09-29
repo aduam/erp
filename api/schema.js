@@ -11,25 +11,26 @@ const typeDefs = gql`
     login(username: String!, password: String!): Me
 
     #Organization
-    createOrganization(organization: OrganizationInput!): Organization @auth
+    createOrganization(organization: OrganizationInput!): Organization
 
     #Market
     createMarket(market: MarketInput!, id_organization: Int!): Market @auth
 
     #Collaborator
-    createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!): Collaborator
+    createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!, id_organization: Int!): Collaborator
 
     #Role
     createRole(title: String!, description: String): Role
 
     #Provider
-    createProvider(provider: ProviderInput! market_id: Int, id_organization: Int!): Provider @auth
+    createProvider(provider: ProviderInput!, id_market: Int!, id_organization: Int!): Provider @auth
     editProvider(provider: ProviderEditInput, id_provider: Int!, id_organization: Int!): Provider @auth
     removeProvider(id: Int!): Provider @auth
 
     #Products
     createTypeProduct(title: String!, description: String, id_organization: Int!): TypeProduct @auth
     createProduct(product: ProductCreateInput!, id_type_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
+    updateStock(amount: Int!, id_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
   }
 
   type Organization {
@@ -133,6 +134,7 @@ const typeDefs = gql`
     phone: String
     mobile: String
     photo: String
+    products: [Product]
   }
 
   input OrganizationInput {

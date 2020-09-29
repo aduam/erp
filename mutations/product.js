@@ -32,7 +32,23 @@ export const CREATE_PRODUCT = gql`
       stock
       min_stock
       base_price
+      price
+      gain
+    }
+  }
+`
+
+export const UPDATE_ADD_PRODUCT = gql`
+  mutation UpdateAddProduct($amount: Int!, $id_product: Int!, $id_provider: Int!, $id_organization: Int!, $id_market: Int!) {
+    updateStock(amount: $amount, id_product: $id_product, id_provider: $id_provider, id_organization: $id_organization, id_market: $id_market) {
+      id
+      code
+      title
+      description
+      stock
+      min_stock
       base_price
+      price
       gain
     }
   }

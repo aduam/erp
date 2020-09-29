@@ -7,6 +7,6 @@ services:
       POSTGRES_PASSWORD: studios
       POSTGRES_DB: studios
     ports:
-      - '5425:5432'
+      - '5432:5432'
     volumes:
       - "./.data/db:/var/lib/postgresql/data/" # persist data even if container shuts down
