@@ -1,4 +1,5 @@
 const { UserInputError } = require('apollo-server-micro')
+const { Op } = require("sequelize")
 const { TypeProduct, Product } = require('../database/models')
 
 const createTypeProduct = async (_, args) => {
@@ -25,8 +26,16 @@ const updateStock = async (_, args) => {
   return product.reload()
 }
 
+const getProducts = async (_, args) => {
+  const { id_market, id_organization } = args
+  const products = await Product.findAll({ where: { id_market, id_organization, stock: { [Op.gt]: 0 } } })
+  if (!products) throw new UserInputError('Productos no existe')
+  return products
+}
+
 module.exports = {
   createTypeProduct,
   createProduct,
   updateStock,
+  getProducts,
 }

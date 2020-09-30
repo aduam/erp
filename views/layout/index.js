@@ -25,6 +25,7 @@ import {
   Settings,
   Group,
   ImportContacts,
+  AssignmentTurnedIn,
 } from '@material-ui/icons'
 
 const drawerWidth = 240
@@ -149,7 +150,7 @@ const Layout = ({ children, router }) => {
           <Tooltip title="Inicio">
             <ListItem button onClick={() => Router.push('/')}>
               <ListItemIcon>
-                <Home color={route === '/' ? 'secondary' : ''} />
+                <Home color={route === '/' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Inicio" />
             </ListItem>
@@ -157,7 +158,7 @@ const Layout = ({ children, router }) => {
           <Tooltip title="Compras">
             <ListItem button onClick={() => Router.push('/compras')}>
               <ListItemIcon>
-                <Store color={route === '/compras' ? 'secondary' : ''} />
+                <Store color={route === '/compras' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Compras" />
             </ListItem>
@@ -165,7 +166,7 @@ const Layout = ({ children, router }) => {
           <Tooltip title="Proveedor">
             <ListItem button onClick={() => Router.push('/proveedor')}>
               <ListItemIcon>
-                <Group color={route === '/proveedor' ? 'secondary' : ''} />
+                <Group color={route === '/proveedor' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Proveedores" />
             </ListItem>
@@ -173,9 +174,17 @@ const Layout = ({ children, router }) => {
           <Tooltip title="Productos">
             <ListItem button onClick={() => Router.push('/producto')}>
               <ListItemIcon>
-                <ImportContacts color={route === '/producto' ? 'secondary' : ''} />
+                <ImportContacts color={route === '/producto' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Productos" />
+            </ListItem>
+          </Tooltip>
+          <Tooltip title="Venta">
+            <ListItem button onClick={() => Router.push('/venta')}>
+              <ListItemIcon>
+                <AssignmentTurnedIn color={route === '/venta' ? 'secondary' : 'inherit'} />
+              </ListItemIcon>
+              <ListItemText primary="Ventas" />
             </ListItem>
           </Tooltip>
         </List>
@@ -184,7 +193,7 @@ const Layout = ({ children, router }) => {
           <Tooltip title="Configuración">
             <ListItem button onClick={() => Router.push('/configuracion')}>
               <ListItemIcon>
-                <Settings color={route === '/configuracion' ? 'secondary' : ''} />
+                <Settings color={route === '/configuracion' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Configuraciones" />
             </ListItem>

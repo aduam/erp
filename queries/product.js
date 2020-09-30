@@ -61,3 +61,19 @@ export const GET_PRODUCTS_BY_PROVIDER = gql`
     }
   }
 `
+
+export const GET_ALL_PRODUCTS = gql`
+  query GetAllProducts($id_organization: Int!, $id_market: Int!) {
+    products(id_organization: $id_organization, id_market: $id_market) {
+      id
+      code
+      title
+      description
+      stock
+      min_stock
+      base_price
+      price
+      gain
+    }
+  }
+`

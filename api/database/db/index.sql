@@ -114,6 +114,10 @@ CREATE TABLE providers (
   delete_at TIMESTAMP
 ); */
 
+CREATE TABLE shoppings (
+  id SERIAL NOT NULL PRIMARY KEY,
+);
+
 CREATE TABLE products (
   id SERIAL NOT NULL PRIMARY KEY,
   code VARCHAR(50),

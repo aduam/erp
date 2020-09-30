@@ -5,12 +5,13 @@ const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
-const { createTypeProduct, createProduct, updateStock } = require('./product')
+const { createTypeProduct, createProduct, updateStock, getProducts } = require('./product')
 
 const resolvers = {
   Query: {
     organization,
     me,
+    products: getProducts,
   },
   Mutation: {
     createOrganization,

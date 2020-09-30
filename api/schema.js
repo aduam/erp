@@ -4,6 +4,7 @@ const typeDefs = gql`
   directive @auth on FIELD_DEFINITION
   type Query {
     organization(id: Int!): Organization @auth
+    products(id_market: Int!, id_organization: Int!): [Product] @auth
     me: Me @auth
   }
 
