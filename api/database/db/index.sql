@@ -98,26 +98,6 @@ CREATE TABLE providers (
   FOREIGN KEY (id_market) REFERENCES markets(id)
 );
 
-/* CREATE TABLE creditors (
-  id SERIAL NOT NULL PRIMARY KEY,
-  name VARCHAR(256) NOT NULL,
-  description TEXT,
-  business_name VARCHAR(256),
-  social_reason VARCHAR(256),
-  nit VARCHAR(10),
-  address TEXT,
-  phone VARCHAR(25),
-  mobile VARCHAR(25),
-  photo VARCHAR(256),
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL,
-  delete_at TIMESTAMP
-); */
-
-CREATE TABLE shoppings (
-  id SERIAL NOT NULL PRIMARY KEY,
-);
-
 CREATE TABLE products (
   id SERIAL NOT NULL PRIMARY KEY,
   code VARCHAR(50),
@@ -139,6 +119,63 @@ CREATE TABLE products (
   FOREIGN KEY (id_provider) REFERENCES providers(id),
   FOREIGN KEY (id_organization) REFERENCES organizations(id),
   FOREIGN KEY (id_market) REFERENCES markets(id)
+);
+
+CREATE TABLE shoppings (
+  id SERIAL NOT NULL PRIMARY KEY,
+  id_provider INTEGER NOT NULL,
+  id_market INTEGER,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_provider) REFERENCES providers(id),
+  FOREIGN KEY (id_market) REFERENCES markets(id)
+);
+
+CREATE TABLE shoppings_products (
+  id SERIAL NOT NULL PRIMARY KEY,
+  amount INTEGER NOT NULL,
+  price NUMERIC(15,2) NOT NULL,
+  id_product INTEGER NOT NULL,
+  id_shopping INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_product) REFERENCES products(id)
+);
+
+CREATE TABLE customers (
+  id SERIAL NOT NULL PRIMARY KEY,
+  names VARCHAR(250),
+  surnames VARCHAR(250),
+  nit VARCHAR(15) NOT NULL,
+  profile_photo VARCHAR(256),
+  address TEXT,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP
+);
+
+CREATE TABLE sales (
+  id SERIAL NOT NULL PRIMARY KEY,
+  id_customer INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_customer) REFERENCES customers(id)
+);
+
+CREATE TABLE sales_products (
+  id SERIAL NOT NULL PRIMARY KEY,
+  amount INTEGER NOT NULL,
+  price NUMERIC(15,2) NOT NULL,
+  id_product INTEGER NOT NULL,
+  id_sale INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_sale) REFERENCES sales(id),
+  FOREIGN KEY (id_product) REFERENCES products(id)
 );
 
 CREATE TABLE account_provider (
