@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "jest": "jest --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
@@ -42,8 +43,17 @@
     "uuidv4": "^6.2.3"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "@testing-library/dom": "^7.24.5",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.4",
+    "babel-jest": "^26.5.2",
     "babel-plugin-styled-components": "^1.11.1",
     "babel-register": "^6.26.0",
+    "jest": "^26.5.2",
+    "jest-dom": "^4.0.0",
+    "react-test-renderer": "^16.13.1",
     "sequelize-cli": "^6.2.0"
   }
 }

@@ -23,6 +23,7 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Container, ContainerHeader, LoaderPage, ErrorPage } from '../../components'
 import { GET_ALL_PRODUCTS } from '../../queries/product'
+import { calculateTotal, calculateIva, calculateSubtotal } from '../../lib/utils'
 
 const TAX_RATE = 0.12;
 
@@ -109,9 +110,9 @@ const SaleView = ({ me }) => {
 
   const onSubmit = (e) => {
     const data = [...bill.data, tempBill]
-    const total = data.map(e => e.price * e.cant).reduce((acc, cur) => acc + cur, 0)
-    const iva = total * TAX_RATE
-    const subtotal = total - iva
+    const total = calculateTotal(data)
+    const iva = calculateIva(total, TAX_RATE)
+    const subtotal = calculateSubtotal(total, iva)
     setBill({
       ...bill, data, totals: {
         subtotal,
