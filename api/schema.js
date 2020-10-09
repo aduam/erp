@@ -15,7 +15,7 @@ const typeDefs = gql`
     createOrganization(organization: OrganizationInput!): Organization
 
     #Market
-    createMarket(market: MarketInput!, id_organization: Int!): Market @auth
+    createMarket(market: MarketInput!, id_organization: Int!): Market
 
     #Collaborator
     createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!, id_organization: Int!): Collaborator
