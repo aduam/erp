@@ -23,7 +23,7 @@ const updateStock = async (_, args) => {
   if (!product) throw new UserInputError('Producto no existe')
   const stock = product.stock + amount
   await product.update({ stock })
-  return product.reload()
+  return product
 }
 
 const getProducts = async (_, args) => {
@@ -33,9 +33,26 @@ const getProducts = async (_, args) => {
   return products
 }
 
+const updateProduct = async (_, args) => {
+  const { id_product, id_organization, id_market } = args
+  const product = await Product.findOne({ where: { id: id_product, id_organization, id_market } })
+  if (!product) throw new UserInputError('Productos no existe')
+  await product.update({  })
+  return product
+}
+
+const removeProduct = async (_, { id }) => {
+  const product = await Product.findOne({ where: { id } })
+  if (!product) throw new UserInputError('Productos no existe')
+  await product.destroy()
+  return product
+}
+
 module.exports = {
   createTypeProduct,
   createProduct,
   updateStock,
   getProducts,
+  updateProduct,
+  removeProduct,
 }

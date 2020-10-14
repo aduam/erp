@@ -5,7 +5,7 @@ const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
-const { createTypeProduct, createProduct, updateStock, getProducts } = require('./product')
+const { createTypeProduct, createProduct, updateStock, getProducts, updateProduct, removeProduct } = require('./product')
 
 const resolvers = {
   Query: {
@@ -24,6 +24,8 @@ const resolvers = {
     editProvider,
     createTypeProduct,
     createProduct,
+    updateProduct,
+    removeProduct,
     updateStock,
   },
   Organization: {
@@ -48,7 +50,7 @@ const resolvers = {
       return providers
     },
     type_products: async ({ id }) => {
-      const type_products = await TypeProduct.findAll({ id_organization: id })
+      const type_products = await TypeProduct.findAll({ where: { id_organization: id } })
       if (!type_products) throw new UserInputError('Error en el tipo de productos')
       return type_products
     },

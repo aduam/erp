@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import styled from 'styled-components'
 import Router from 'next/router'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import clsx from 'clsx'
+import { destroyCookie } from 'nookies'
 import {
   Drawer,
   AppBar,
@@ -15,7 +17,10 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
+  MenuItem,
+  Button,
 } from '@material-ui/core'
+import Logout from '@material-ui/core/Menu'
 import {
   Menu,
   ChevronLeft,
@@ -92,14 +97,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const InnerAppBar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+`;
+
 const Layout = ({ children, router }) => {
   const { route } = router
   const classes = useStyles()
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [open, setOpen] = useState(null);
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
+  const handleOpenMenu = (e) => setMenu(e.currentTarget)
+  const handleCloseMenu = () => setMenu(false)
+
+  const handleLogout = () => {
+    destroyCookie(null, 'authorization', null)
+    destroyCookie(null, "refresh_token", null)
+    window.location.reload()
+  }
 
   return (
     <div className={classes.root}>
@@ -110,22 +132,38 @@ const Layout = ({ children, router }) => {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            {process.env.NAME_BUSINESS}
-          </Typography>
-        </Toolbar>
+        <InnerAppBar>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+            >
+              <Menu />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              {process.env.NAME_BUSINESS}
+            </Typography>
+          </Toolbar>
+          <div>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleOpenMenu} variant="text">
+              <Settings />
+            </Button>
+            <Logout
+              id="simple-menu"
+              anchorEl={menu}
+              keepMounted
+              open={Boolean(menu)}
+              onClose={handleCloseMenu}
+            >
+              <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+            </Logout>
+          </div>
+        </InnerAppBar>
       </AppBar>
       <Drawer
         variant="permanent"
@@ -190,14 +228,14 @@ const Layout = ({ children, router }) => {
         </List>
         <Divider />
         <List>
-          <Tooltip title="Configuración">
+          {/* <Tooltip title="Configuración">
             <ListItem button onClick={() => Router.push('/configuracion')}>
               <ListItemIcon>
                 <Settings color={route === '/configuracion' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Configuraciones" />
             </ListItem>
-          </Tooltip>
+          </Tooltip> */}
         </List>
       </Drawer>
       <main className={classes.content}>

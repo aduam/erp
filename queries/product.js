@@ -13,9 +13,6 @@ export const GET_PRODUCTS = gql`
           description
           stock
           min_stock
-          base_price
-          price
-          gain
         }
       }
     }
@@ -39,6 +36,19 @@ export const GET_TYPE_PRODUCTS = gql`
   }
 `
 
+export const TYPE_PRODUCTS = gql`
+  query GetProducts($id_organization: Int!) {
+    organization(id: $id_organization) {
+      id
+      type_products {
+        id
+        title
+        description
+      }
+    }
+  }
+`
+
 export const GET_PRODUCTS_BY_PROVIDER = gql`
   query GetProductsByProvider($id_organization: Int!, $id_provider: Int!) {
     organization(id: $id_organization) {
@@ -53,9 +63,6 @@ export const GET_PRODUCTS_BY_PROVIDER = gql`
           description
           stock
           min_stock
-          base_price
-          price
-          gain
         }
       }
     }
@@ -71,9 +78,6 @@ export const GET_ALL_PRODUCTS = gql`
       description
       stock
       min_stock
-      base_price
-      price
-      gain
     }
   }
 `

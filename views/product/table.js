@@ -17,8 +17,8 @@ import {
 import { DeleteForever, Edit, ShoppingCartOutlined } from '@material-ui/icons'
 import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
-import { REMOVE_PROVIDER } from '../../mutations/provider'
-import { GET_PROVIDERS } from '../../queries/provider'
+import { REMOVE_PRODUCT } from '../../mutations/product'
+import { GET_PRODUCTS } from '../../queries/product'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,51 +48,29 @@ const headCells = [
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
-const updateCache = (client, { data: { removeProvider } }, id) => {
-  const cache = client.readQuery({
-    query: GET_PROVIDERS,
-    variables: { id }
-  })
-
-  const providers = cache.organization.providers.filter((e) => e.id !== removeProvider.id)
-
-  const data = {
-    ...cache,
-    organization: {
-      ...cache.organization,
-      providers,
-    },
-  }
-
-  client.writeQuery({
-    query: GET_PROVIDERS,
-    variables: { id },
-    data,
-  })
-}
-
-const TableProvider = ({ products, id_organization }) => {
+const TableProvider = ({ products, id_organization, id_market }) => {
   const classes = useStyles();
 
-  const [removeProvider] = useMutation(REMOVE_PROVIDER, {
-    update: (cache, data) => updateCache(cache, data, id_organization),
+  const [removeProduct] = useMutation(REMOVE_PRODUCT, {
+    refetchQueries: [{ query: GET_PRODUCTS, variables: { id_organization, id_market } }],
+    awaitRefetchQueries: true,
     onCompleted: () => {
-      Swal.fire('Proveedor eliminado!', '', 'success')
+      Swal.fire('Producto eliminado!', '', 'success')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al eliminar el proveedor!', '', 'error')
+      Swal.fire('Hubo un error al eliminar el producto!', '', 'error')
     },
   })
 
-  const handleDelete = (e, provider) => {
+  const handleDelete = (e, element) => {
     e.stopPropagation()
     Swal.fire({
-      title: `¿Estás seguro que quieres eliminar el proveedor "${provider.name}"?`,
+      title: `¿Estás seguro que quieres eliminar el producto "${element.title}"?`,
       showCancelButton: true,
       confirmButtonText: `Eliminar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        removeProvider({ variables: { id: provider.id } })
+        removeProduct({ variables: { id: element.id } })
       }
     })
   }
@@ -118,7 +96,7 @@ const TableProvider = ({ products, id_organization }) => {
                 {products.map((element) => (
                   <TableRow hover key={element.id}>
                     <TableCell>
-                      {element.name}
+                      {element.title}
                     </TableCell>
                     <TableCell>{element.description}</TableCell>
                     <TableCell>{element.stock}</TableCell>
@@ -134,11 +112,11 @@ const TableProvider = ({ products, id_organization }) => {
                             <Edit />
                           </Button>
                         </Tooltip>
-                        <Tooltip title="Comprar">
+                        {/* <Tooltip title="Comprar">
                           <Button onClick={() => Router.push('/proveedor/comprar/[id]', `/proveedor/comprar/${element.id}`)}>
                             <ShoppingCartOutlined />
                           </Button>
-                        </Tooltip>
+                        </Tooltip> */}
                       </WrapButtonActions>
                     </TableCell>
                   </TableRow>
@@ -157,14 +135,7 @@ const TableProvider = ({ products, id_organization }) => {
           /> */}
         </Paper>
       ) : (
-          <>
-            <Typography className={classes.nothing} variant="h3">No hay productos</Typography>
-            <Button className={classes.goProduct} onClick={() => Router.push('/proveedor')}>
-              <Typography variant="button" color="secondary">
-                Agregar producto
-              </Typography>
-            </Button>
-          </>
+          <Typography className={classes.nothing} variant="h3">No hay productos</Typography>
         )}
     </>
   )

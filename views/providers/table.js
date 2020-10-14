@@ -122,11 +122,11 @@ const TableProvider = ({ providers, id_organization }) => {
                         <Edit />
                       </Button>
                     </Tooltip>
-                    <Tooltip title="Ver productos">
+                    {/* <Tooltip title="Ver productos">
                       <Button onClick={() => Router.push('/proveedor/producto/[id]', `/proveedor/producto/${element.id}`)}>
                         <Visibility />
                       </Button>
-                    </Tooltip>
+                    </Tooltip> */}
                   </WrapButtonActions>
                 </TableCell>
               </TableRow>

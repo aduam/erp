@@ -1,10 +1,9 @@
 import Router from 'next/router'
 import { Typography, Button } from '@material-ui/core'
 import { Container, ContainerHeader, LoaderPage, ErrorPage } from '../../components'
-import TableProviders from './table'
+import TableProducts from './table'
 
 const ProvidersView = ({ isLoading, isError, products, me }) => {
-
   if (isLoading) {
     return (
       <LoaderPage>
@@ -25,11 +24,14 @@ const ProvidersView = ({ isLoading, isError, products, me }) => {
     <Container>
       <ContainerHeader>
         <Typography variant="h1" color="secondary">Productos</Typography>
-        <Button onClick={() => Router.push('/producto/tipo-producto/crear')} variant="contained" color="secondary">
-          <Typography variant="button">Agregar tipo de producto</Typography>
+        <Button onClick={() => Router.push('/producto/tipo-producto/crear')} variant="outlined" color="secondary">
+          <Typography variant="button" color="secondary">Agregar tipo de producto</Typography>
+        </Button>
+        <Button onClick={() => Router.push('/producto/crear')} variant="contained" color="secondary">
+          <Typography variant="button">Agregar producto</Typography>
         </Button>
       </ContainerHeader>
-      <TableProviders products={products} id_organization={me.id_organization} />
+      <TableProducts products={products} id_organization={me.id_organization} id_market={me.id_market} />
     </Container>
   )
 }

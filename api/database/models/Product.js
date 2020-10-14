@@ -13,17 +13,7 @@ const Product = sequelize.define('products', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  base_price: {
-    type: Sequelize.DECIMAL,
-    allowNull: false,
-  },
-  price: Sequelize.DECIMAL,
-  gain: Sequelize.DECIMAL,
   id_type_product: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  id_provider: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },

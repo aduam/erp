@@ -9,7 +9,8 @@ const Products = ({ me }) => {
     variables: {
       id_organization: me.id_organization,
       id_market: me.id_market,
-    }
+    },
+    fetchPolicy: 'network-only',
   })
 
   const products = data && data.organization && data.organization.market && data.organization.market.products ? data.organization.market.products : []

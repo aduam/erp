@@ -14,14 +14,12 @@ export const CREATE_PRODUCT = gql`
   mutation CreateProduct(
     $product: ProductCreateInput!
     $id_type_product: Int!
-    $id_provider: Int!
     $id_market: Int!
     $id_organization: Int!
   ) {
     createProduct(
       product: $product
       id_type_product: $id_type_product
-      id_provider: $id_provider
       id_market: $id_market
       id_organization: $id_organization
     ) {
@@ -31,9 +29,6 @@ export const CREATE_PRODUCT = gql`
       description
       stock
       min_stock
-      base_price
-      price
-      gain
     }
   }
 `
@@ -47,9 +42,14 @@ export const UPDATE_ADD_PRODUCT = gql`
       description
       stock
       min_stock
-      base_price
-      price
-      gain
+    }
+  }
+`
+
+export const REMOVE_PRODUCT = gql`
+  mutation RemoveProduct($id: Int!) {
+    removeProduct(id: $id) {
+      id
     }
   }
 `

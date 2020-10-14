@@ -103,33 +103,39 @@ CREATE TABLE products (
   code VARCHAR(50),
   title VARCHAR(100),
   description TEXT,
-  stock INTEGER NOT NULL,
+  stock INTEGER NOT NULL DEFAULT 0,
   min_stock INTEGER NOT NULL,
-  base_price NUMERIC(15,2) NOT NULL,
-  price NUMERIC(15,2),
-  gain NUMERIC(15,2),
+  --base_price NUMERIC(15,2) NOT NULL,
+  --price NUMERIC(15,2),
+  --gain NUMERIC(15,2),
   id_type_product INTEGER NOT NULL,
-  id_provider INTEGER NOT NULL,
+  --id_provider INTEGER NOT NULL,
   id_organization INTEGER NOT NULL,
   id_market INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
   FOREIGN KEY (id_type_product) REFERENCES type_products(id),
-  FOREIGN KEY (id_provider) REFERENCES providers(id),
+  --FOREIGN KEY (id_provider) REFERENCES providers(id),
   FOREIGN KEY (id_organization) REFERENCES organizations(id),
   FOREIGN KEY (id_market) REFERENCES markets(id)
 );
 
+CREATE TABLE status (
+  id SERIAL NOT NULL PRIMARY KEY,
+  title VARCHAR(20) NOT NULL,
+  description TEXT
+);
+
 CREATE TABLE shoppings (
   id SERIAL NOT NULL PRIMARY KEY,
-  id_provider INTEGER NOT NULL,
   id_market INTEGER,
+  id_status INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
-  FOREIGN KEY (id_provider) REFERENCES providers(id),
-  FOREIGN KEY (id_market) REFERENCES markets(id)
+  FOREIGN KEY (id_market) REFERENCES markets(id),
+  FOREIGN KEY (id_status) REFERENCES status(id)
 );
 
 CREATE TABLE shoppings_products (
@@ -141,6 +147,7 @@ CREATE TABLE shoppings_products (
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
+  FOREIGN KEY (id_shopping) REFERENCES shoppings(id),
   FOREIGN KEY (id_product) REFERENCES products(id)
 );
 
@@ -159,10 +166,12 @@ CREATE TABLE customers (
 CREATE TABLE sales (
   id SERIAL NOT NULL PRIMARY KEY,
   id_customer INTEGER NOT NULL,
+  id_status INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
-  FOREIGN KEY (id_customer) REFERENCES customers(id)
+  FOREIGN KEY (id_customer) REFERENCES customers(id),
+  FOREIGN KEY (id_status) REFERENCES status(id)
 );
 
 CREATE TABLE sales_products (
@@ -177,6 +186,44 @@ CREATE TABLE sales_products (
   FOREIGN KEY (id_sale) REFERENCES sales(id),
   FOREIGN KEY (id_product) REFERENCES products(id)
 );
+
+CREATE OR REPLACE FUNCTION adjust_products_shopping()
+  RETURNS TRIGGER
+  LANGUAGE PLPGSQL
+  AS
+$$
+DECLARE
+    stocks integer;
+BEGIN
+	stocks := stock from products where id = NEW.id_product;
+	UPDATE products set stock = (stocks + NEW.amount) WHERE id = NEW.id_product;
+	RETURN NEW;
+END;
+$$
+
+CREATE TRIGGER update_products_shopping
+  AFTER INSERT ON shoppings_products
+  FOR EACH ROW
+  EXECUTE PROCEDURE adjust_products_shopping();
+
+CREATE OR REPLACE FUNCTION adjust_products_salling()
+  RETURNS TRIGGER
+  LANGUAGE PLPGSQL
+  AS
+$$
+DECLARE
+    stocks integer;
+BEGIN
+	stocks := stock from products where id = NEW.id_product;
+	UPDATE products set stock = (stocks - NEW.amount) WHERE id = NEW.id_product;
+	RETURN NEW;
+END;
+$$
+
+CREATE TRIGGER update_products_selling
+  AFTER INSERT ON sales_products
+  FOR EACH ROW
+  EXECUTE PROCEDURE adjust_products_salling();
 
 CREATE TABLE account_provider (
   id SERIAL NOT NULL PRIMARY KEY,

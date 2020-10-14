@@ -30,7 +30,9 @@ const typeDefs = gql`
 
     #Products
     createTypeProduct(title: String!, description: String, id_organization: Int!): TypeProduct @auth
-    createProduct(product: ProductCreateInput!, id_type_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
+    createProduct(product: ProductCreateInput!, id_type_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
+    updateProduct(product: ProductUpdateInput, id_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
+    removeProduct(id: Int!): Product @auth
     updateStock(amount: Int!, id_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
   }
 
@@ -76,9 +78,6 @@ const typeDefs = gql`
     description: String
     stock: Int
     min_stock: Int
-    base_price: Float
-    price: Float
-    gain: Float
   }
 
   type Role {
@@ -194,12 +193,16 @@ const typeDefs = gql`
   input ProductCreateInput {
     code: String
     title: String!
-    description: String
     stock: Int!
+    description: String
     min_stock: Int!
-    base_price: Float!
-    price: Float
-    gain: Float
+  }
+
+  input ProductUpdateInput {
+    code: String
+    title: String
+    description: String
+    min_stock: Int!
   }
 `;
 
