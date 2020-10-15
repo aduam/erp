@@ -3,7 +3,7 @@ import { Typography, Button, TextField } from '@material-ui/core'
 import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
-import { Container, Form, InnerForm, WrapInput, LoaderPage, ErrorPage } from '../../components'
+import { Container, Form, InnerForm, WrapInput, LoaderPage, ErrorPage, Loading } from '../../components'
 import { EDIT_PROVIDER } from '../../mutations/provider'
 
 const EditarProviderView = ({ me, isLoading, isError, provider, id_provider }) => {
@@ -34,7 +34,7 @@ const EditarProviderView = ({ me, isLoading, isError, provider, id_provider }) =
   })
 
   if (isLoading) {
-    return <LoaderPage>Cargando...</LoaderPage>
+    return <LoaderPage><Loading /></LoaderPage>
   }
 
   if (isError) {

@@ -7,9 +7,11 @@ import {
   LoaderPage,
   ErrorPage,
   WrapButtonActions,
+  Loading,
 } from './styles'
 
 export {
+  Loading,
   Container,
   Form,
   InnerForm,

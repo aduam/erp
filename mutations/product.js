@@ -53,3 +53,19 @@ export const REMOVE_PRODUCT = gql`
     }
   }
 `
+
+export const SHOPPING_CREATE = gql`
+  mutation ShoppingCreate($id_market: Int!, $id_status: Int!, $recipe: String! $products: [ProductsShoppingCreateInput!]!) {
+    shopingCreate(id_market: $id_market, id_status: $id_status, products: $products, recipe: $recipe) {
+      id
+      products {
+        id
+        code
+        title
+        description
+        stock
+        min_stock
+      }
+    }
+  }
+`

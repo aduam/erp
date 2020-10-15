@@ -129,6 +129,7 @@ CREATE TABLE status (
 
 CREATE TABLE shoppings (
   id SERIAL NOT NULL PRIMARY KEY,
+  recipe VARCHAR(50) NOT NULL,
   id_market INTEGER,
   id_status INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,

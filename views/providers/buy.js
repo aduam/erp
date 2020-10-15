@@ -5,7 +5,7 @@ import { Autocomplete } from '@material-ui/lab'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
-import { Container, Form, InnerForm, WrapInput, ErrorPage, LoaderPage } from '../../components'
+import { Container, Form, InnerForm, WrapInput, ErrorPage, LoaderPage, Loading } from '../../components'
 import { CREATE_PRODUCT } from '../../mutations/product'
 
 const ProviderBuyView = ({ me, type_products, id_provider, provider, isLoading, isError }) => {
@@ -37,7 +37,7 @@ const ProviderBuyView = ({ me, type_products, id_provider, provider, isLoading, 
   })
 
   if (isLoading) {
-    return <LoaderPage>Cargando...</LoaderPage>
+    return <LoaderPage><Loading /></LoaderPage>
   }
 
   if (isError) {

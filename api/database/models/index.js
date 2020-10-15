@@ -6,6 +6,9 @@ const Collaborator = require('./Collaborator')
 const Provider = require('./Provider')
 const TypeProduct = require('./TypeProduct')
 const Product = require('./Product')
+const Shopping = require('./Shopping')
+const ProductShopping = require('./ProductShopping')
+const Status = require('./Status')
 
 module.exports = {
   Market,
@@ -16,4 +19,7 @@ module.exports = {
   Provider,
   TypeProduct,
   Product,
+  Shopping,
+  ProductShopping,
+  Status,
 }

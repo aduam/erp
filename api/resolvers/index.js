@@ -1,11 +1,20 @@
 const { UserInputError } = require('apollo-server-micro')
-const { Market, Role, Collaborator, User, Provider, Product, TypeProduct } = require('../database/models')
+const sequelize = require('../database/connection')
+const { Status, Market, Role, Collaborator, User, Provider, Product, TypeProduct, Shopping } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
-const { createTypeProduct, createProduct, updateStock, getProducts, updateProduct, removeProduct } = require('./product')
+const {
+  createTypeProduct,
+  createProduct,
+  updateStock,
+  getProducts,
+  updateProduct,
+  removeProduct,
+  shopingCreate,
+} = require('./product')
 
 const resolvers = {
   Query: {
@@ -27,6 +36,7 @@ const resolvers = {
     updateProduct,
     removeProduct,
     updateStock,
+    shopingCreate,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -71,6 +81,16 @@ const resolvers = {
       if (!products) throw new UserInputError('Error al buscar los productos')
       return products
     },
+    shoppings: async ({ id }) => {
+      const shoppings = await Shopping.findAll({ where: { id_market: id } })
+      if (!shoppings) throw new UserInputError('Error al buscar las compras')
+      return shoppings
+    },
+    shopping: async ({ id }, args) => {
+      const shopping = await Shopping.findOne({ where: { id_market: id, id: args.id } })
+      if (!shopping) throw new UserInputError('Error al buscar la compra')
+      return shopping
+    },
   },
   Collaborator: {
     role: async ({ id_role }) => {
@@ -103,6 +123,18 @@ const resolvers = {
       return products
     },
   },
+  Shopping: {
+    products: async ({ id }) => {
+      const [results] = await sequelize.query(`SELECT * from products P INNER JOIN shoppings_products SP on P.id = SP.id_product WHERE SP.id_shopping = ${id}`);
+      if (!results) throw new UserInputError('Error en productos')
+      return results
+    },
+    status: async ({ id_status }) => {
+      const status = await Status.findOne({ where: { id: id_status } })
+      if (!status) throw new UserInputError('Error en el status')
+      return status
+    },
+  }
 }
 
 module.exports = resolvers

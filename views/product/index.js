@@ -1,13 +1,13 @@
 import Router from 'next/router'
 import { Typography, Button } from '@material-ui/core'
-import { Container, ContainerHeader, LoaderPage, ErrorPage } from '../../components'
+import { Container, ContainerHeader, LoaderPage, ErrorPage, Loading } from '../../components'
 import TableProducts from './table'
 
 const ProvidersView = ({ isLoading, isError, products, me }) => {
   if (isLoading) {
     return (
       <LoaderPage>
-        Cargando...
+        <Loading />
       </LoaderPage>
     )
   }

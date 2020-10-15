@@ -1,6 +1,5 @@
 const { UserInputError } = require('apollo-server-micro')
-const { Op } = require("sequelize")
-const { TypeProduct, Product } = require('../database/models')
+const { TypeProduct, Product, Shopping, ProductShopping } = require('../database/models')
 
 const createTypeProduct = async (_, args) => {
   const typeProduct = await TypeProduct.create({ ...args })
@@ -28,7 +27,7 @@ const updateStock = async (_, args) => {
 
 const getProducts = async (_, args) => {
   const { id_market, id_organization } = args
-  const products = await Product.findAll({ where: { id_market, id_organization, stock: { [Op.gt]: 0 } } })
+  const products = await Product.findAll({ where: { id_market, id_organization } })
   if (!products) throw new UserInputError('Productos no existe')
   return products
 }
@@ -48,6 +47,15 @@ const removeProduct = async (_, { id }) => {
   return product
 }
 
+const shopingCreate = async (_, { id_market, id_status, products, recipe }) => {
+  const shopping = await Shopping.create({ id_market, id_status, recipe })
+  if (!shopping) throw new UserInputError('Error al crear la compra')
+  await Promise.all(
+    products.map((product) => ProductShopping.create({ ...product, id_shopping: shopping.id })),
+  )
+  return shopping.reload()
+}
+
 module.exports = {
   createTypeProduct,
   createProduct,
@@ -55,4 +63,5 @@ module.exports = {
   getProducts,
   updateProduct,
   removeProduct,
+  shopingCreate,
 }

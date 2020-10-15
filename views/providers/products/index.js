@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client'
 import { Typography, Button, Modal, TextField } from '@material-ui/core'
 import Swal from 'sweetalert2'
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, ContainerHeader, LoaderPage, ErrorPage } from '../../../components'
+import { Container, ContainerHeader, LoaderPage, ErrorPage, Loading } from '../../../components'
 import TableProducts from './table'
 import { UPDATE_ADD_PRODUCT } from '../../../mutations/product'
 
@@ -85,7 +85,7 @@ const ProductsProviderView = ({ me, isLoading, isError, products, provider }) =>
   if (isLoading) {
     return (
       <LoaderPage>
-        Cargando...
+        <Loading />
       </LoaderPage>
     )
   }

@@ -34,6 +34,21 @@ const typeDefs = gql`
     updateProduct(product: ProductUpdateInput, id_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
     removeProduct(id: Int!): Product @auth
     updateStock(amount: Int!, id_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
+
+    #Shoppings
+    shopingCreate(id_market: Int!, id_status: Int!, recipe: String! products: [ProductsShoppingCreateInput!]!): Shopping @auth
+  }
+
+  type Status {
+    id: Int
+    title: String
+  }
+
+  type Shopping {
+    id: Int
+    recipe: String
+    products: [Product]
+    status: Status
   }
 
   type Organization {
@@ -69,6 +84,8 @@ const typeDefs = gql`
     product(id: Int!): Product
     id_organization: Int
     create_at: Float
+    shoppings: [Shopping]
+    shopping(id: Int!): Shopping
   }
 
   type Product {
@@ -78,6 +95,8 @@ const typeDefs = gql`
     description: String
     stock: Int
     min_stock: Int
+    amount: Int
+    price: String
   }
 
   type Role {
@@ -204,6 +223,12 @@ const typeDefs = gql`
     description: String
     min_stock: Int!
   }
-`;
 
-module.exports = typeDefs;
+  input ProductsShoppingCreateInput {
+    amount: Int!
+    price: Float!
+    id_product: Int!
+  }
+`
+
+module.exports = typeDefs
