@@ -6,7 +6,7 @@ describe('Inicio', () => {
   it('La página de Login ha cargado sin errores', () => {
     render(<Home />);
     expect(
-      screen.getByText('homeview')
+      screen.getByText('Tienda')
     ).toBeInTheDocument();
   });
 });

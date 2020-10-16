@@ -33,6 +33,31 @@ export const CREATE_PRODUCT = gql`
   }
 `
 
+export const UPDATE_PRODUCT = gql`
+  mutation UpdateProduct(
+    $product: ProductUpdateInput!
+    $id_type_product: Int!
+    $id_market: Int!
+    $id_organization: Int!
+    $id_product: Int!
+  ) {
+    updateProduct(
+      product: $product
+      id_type_product: $id_type_product
+      id_market: $id_market
+      id_organization: $id_organization
+      id_product: $id_product
+    ) {
+      id
+      code
+      title
+      description
+      stock
+      min_stock
+    }
+  }
+`
+
 export const UPDATE_ADD_PRODUCT = gql`
   mutation UpdateAddProduct($amount: Int!, $id_product: Int!, $id_provider: Int!, $id_organization: Int!, $id_market: Int!) {
     updateStock(amount: $amount, id_product: $id_product, id_provider: $id_provider, id_organization: $id_organization, id_market: $id_market) {

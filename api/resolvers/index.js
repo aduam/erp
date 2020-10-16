@@ -19,6 +19,7 @@ const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
+const { reports } = require('./reports')
 const {
   createTypeProduct,
   createProduct,
@@ -37,6 +38,7 @@ const resolvers = {
     organization,
     me,
     products: getProducts,
+    reports,
   },
   Mutation: {
     createOrganization,
@@ -144,6 +146,11 @@ const resolvers = {
       if (!user) throw new UserInputError('Error en el usuario')
       return user
     },
+    market: async ({ id_market }) => {
+      const market = await Market.findOne({ where: { id: id_market } })
+      if (!market) throw new UserInputError('Error en la tienda')
+      return market
+    },
   },
   Provider: {
     products: async ({ id }) => {
@@ -176,6 +183,13 @@ const resolvers = {
       return status
     },
   },
+  Product: {
+    type_product: async ({ id_type_product }) => {
+      const type_product = await TypeProduct.findOne({ where: { id: id_type_product } })
+      if (!type_product) throw new UserInputError('Error en el tipo de producto')
+      return type_product
+    },
+  }
 }
 
 module.exports = resolvers

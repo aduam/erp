@@ -102,21 +102,11 @@ const TableProvider = ({ products, id_organization, id_market }) => {
                     <TableCell>{element.stock}</TableCell>
                     <TableCell>
                       <WrapButtonActions>
-                        <Tooltip title="Eliminar">
-                          <Button onClick={(e) => handleDelete(e, element)}>
-                            <DeleteForever color="error" />
-                          </Button>
-                        </Tooltip>
-                        <Tooltip title="Editar">
-                          <Button onClick={() => Router.push('/proveedor/editar/[id]', `/proveedor/editar/${element.id}`)}>
+                        <Tooltip title="Editar detalles">
+                          <Button onClick={() => Router.push('/producto/editar/[id]', `/producto/editar/${element.id}`)}>
                             <Edit />
                           </Button>
                         </Tooltip>
-                        {/* <Tooltip title="Comprar">
-                          <Button onClick={() => Router.push('/proveedor/comprar/[id]', `/proveedor/comprar/${element.id}`)}>
-                            <ShoppingCartOutlined />
-                          </Button>
-                        </Tooltip> */}
                       </WrapButtonActions>
                     </TableCell>
                   </TableRow>

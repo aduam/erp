@@ -6,6 +6,8 @@ const typeDefs = gql`
     organization(id: Int!): Organization @auth
     products(id_market: Int!, id_organization: Int!): [Product] @auth
     me: Me @auth
+    #Report
+    reports: Report @auth
   }
 
   type Mutation {
@@ -31,7 +33,7 @@ const typeDefs = gql`
     #Products
     createTypeProduct(title: String!, description: String, id_organization: Int!): TypeProduct @auth
     createProduct(product: ProductCreateInput!, id_type_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
-    updateProduct(product: ProductUpdateInput, id_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
+    updateProduct(product: ProductUpdateInput, id_product: Int!, id_type_product: Int!, id_organization: Int!, id_market: Int!): Product @auth
     removeProduct(id: Int!): Product @auth
     updateStock(amount: Int!, id_product: Int!, id_provider: Int!, id_organization: Int!, id_market: Int!): Product @auth
 
@@ -42,6 +44,23 @@ const typeDefs = gql`
     #Sales
     saleCreate(id_market: Int!, id_status: Int!, products:[ProductsShoppingCreateInput!]!): Sale @auth
     saleCancel(id_sale: Int!, id_market: Int!): Sale @auth
+  }
+
+  type ReportSale {
+    title: String
+    categories: [String!]
+    series: [Int!]
+  }
+
+  type ReportShop {
+    title: String
+    categories: [String!]
+    series: [Int!]
+  }
+
+  type Report {
+    sale: ReportSale
+    shop: ReportShop
   }
 
   type Status {
@@ -110,6 +129,7 @@ const typeDefs = gql`
     min_stock: Int
     amount: Int
     price: String
+    type_product: TypeProduct
   }
 
   type Role {
@@ -151,6 +171,7 @@ const typeDefs = gql`
     id_organization: Int
     role: Role
     user: User
+    market: Market
     token: String
     refresh_token: String
   }
@@ -234,7 +255,7 @@ const typeDefs = gql`
     code: String
     title: String
     description: String
-    min_stock: Int!
+    min_stock: Int
   }
 
   input ProductsShoppingCreateInput {

@@ -2,9 +2,8 @@ import { UserInputError } from 'apollo-server-micro'
 import { Provider } from '../database/models'
 
 const createProvider = async (_, args, ctx) => {
-  console.log(args)
   const provider = await Provider.create({ ...args.provider, id_organization: args.id_organization, id_market: args.id_market })
-  console.log(provider)
+
   if (!provider) {
     throw new UserInputError('no se pudo crear el proveedor')
   }

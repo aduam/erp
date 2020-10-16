@@ -34,11 +34,11 @@ const getProducts = async (_, args) => {
 }
 
 const updateProduct = async (_, args) => {
-  const { id_product, id_organization, id_market } = args
-  const product = await Product.findOne({ where: { id: id_product, id_organization, id_market } })
-  if (!product) throw new UserInputError('Productos no existe')
-  await product.update({  })
-  return product
+  const { id_product, id_organization, id_market, product, id_type_product } = args
+  const getProduct = await Product.findOne({ where: { id: id_product, id_organization, id_market } })
+  if (!getProduct) throw new UserInputError('Productos no existe')
+  await getProduct.update({ ...product, id_type_product })
+  return getProduct
 }
 
 const removeProduct = async (_, { id }) => {
@@ -77,7 +77,7 @@ const shopingCancel = async (_, { id_shopping }) => {
     await product.update({ stock }, { transaction })
   })
   await shopping.update({ id_status: 2 }, { transaction })
-  console.log(isEnough.length > 0)
+
   if (isEnough.length > 0) {
     throw new UserInputError(`No hay existencia de los productos ${isEnough.join(', ')}`)
   } else {

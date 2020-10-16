@@ -31,6 +31,7 @@ import {
   Group,
   ImportContacts,
   AssignmentTurnedIn,
+  TrendingUp,
 } from '@material-ui/icons'
 
 const drawerWidth = 240
@@ -105,7 +106,7 @@ const InnerAppBar = styled.div`
   padding: 0 5px;
 `;
 
-const Layout = ({ children, router }) => {
+const Layout = ({ children, router, me }) => {
   const { route } = router
   const classes = useStyles()
   const theme = useTheme();
@@ -149,6 +150,9 @@ const Layout = ({ children, router }) => {
               {process.env.NAME_BUSINESS}
             </Typography>
           </Toolbar>
+          <Tooltip title={me && me.names ? `${me.names} ${me.surnames}` : ''}>
+            <Typography variant="h6" noWrap>{me && me.names ? `${me.names} ${me.surnames}` : ''}</Typography>
+          </Tooltip>
           <div>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleOpenMenu} variant="text">
               <Settings />
@@ -223,6 +227,14 @@ const Layout = ({ children, router }) => {
                 <AssignmentTurnedIn color={route === '/venta' ? 'secondary' : 'inherit'} />
               </ListItemIcon>
               <ListItemText primary="Ventas" />
+            </ListItem>
+          </Tooltip>
+          <Tooltip title="Reportes">
+            <ListItem button onClick={() => Router.push('/reportes')}>
+              <ListItemIcon>
+                <TrendingUp color={route === '/reportes' ? 'secondary' : 'inherit'} />
+              </ListItemIcon>
+              <ListItemText primary="Reportes" />
             </ListItem>
           </Tooltip>
         </List>
