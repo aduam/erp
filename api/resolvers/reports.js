@@ -1,4 +1,3 @@
-const { UserInputError } = require('apollo-server-micro')
 const moment = require('moment')
 const sequelize = require('sequelize')
 const { Sale, Shopping } = require('../database/models')
