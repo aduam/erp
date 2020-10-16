@@ -166,13 +166,15 @@ CREATE TABLE customers (
 
 CREATE TABLE sales (
   id SERIAL NOT NULL PRIMARY KEY,
-  id_customer INTEGER NOT NULL,
+  id_customer INTEGER,
   id_status INTEGER NOT NULL,
+  id_market INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
   delete_at TIMESTAMP,
   FOREIGN KEY (id_customer) REFERENCES customers(id),
-  FOREIGN KEY (id_status) REFERENCES status(id)
+  FOREIGN KEY (id_status) REFERENCES status(id),
+  FOREIGN KEY (id_market) REFERENCES markets(id)
 );
 
 CREATE TABLE sales_products (

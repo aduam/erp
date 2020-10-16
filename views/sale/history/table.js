@@ -44,12 +44,12 @@ const headCells = [
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
-const TableProvider = ({ shoppings, handleOpen }) => {
+const TableProvider = ({ sales, handleOpen, id_market }) => {
   const classes = useStyles();
 
   return (
     <>
-      {shoppings.length > 0 ? (
+      {sales.length > 0 ? (
         <Paper className={classes.paper}>
           <TableContainer>
             <Table className={classes.table}>
@@ -65,10 +65,10 @@ const TableProvider = ({ shoppings, handleOpen }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {shoppings.map((shop) => (
+                {sales.map((shop) => (
                   <TableRow hover key={shop.id}>
                     <TableCell>
-                      {shop.recipe}
+                      {`${id_market}-${shop.id}`}
                     </TableCell>
                     <TableCell>Aquí va la descripción</TableCell>
                     <TableCell>
@@ -86,7 +86,7 @@ const TableProvider = ({ shoppings, handleOpen }) => {
                           </Button>
                         </Tooltip>
                         <Tooltip title="Ver el detalle">
-                          <Button onClick={() => Router.push('/compras/detalle/[id]', `/compras/detalle/${shop.id}`)}>
+                          <Button onClick={() => Router.push('/venta/detalle/[id]', `/venta/detalle/${shop.id}`)}>
                             <Visibility />
                           </Button>
                         </Tooltip>

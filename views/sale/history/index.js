@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, ContainerHeader, LoaderPage, ErrorPage, Loading } from '../../../components'
-import { SHOPPING_CANCEL } from '../../../mutations/product'
+import { SALE_CANCEL } from '../../../mutations/product'
 import Table from './table'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,7 @@ const InnerModal = styled.div`
   }
 `
 
-const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
+const SalesHistory = ({ me, isError, isLoading, sales }) => {
     if (isLoading) {
     return (
       <LoaderPage>
@@ -65,7 +65,7 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
   const handleOpen = (data) => setModal({ ...modal, open: true, data })
   const handleClose = () => setModal({ ...modal, open: false, data: null })
 
-  const [shopingCancel, { loading }] = useMutation(SHOPPING_CANCEL, {
+  const [saleCancel, { loading }] = useMutation(SALE_CANCEL, {
     onCompleted: () => {
       Swal.fire({
         position: 'bottom-end',
@@ -80,7 +80,7 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'No se ha anulado la factura!, hubo un error',
+        title: 'No se ha anulado la factura, hubo un error!',
         showConfirmButton: false,
         timer: 4000
       })
@@ -88,18 +88,19 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
   })
 
   const handleCancelRecipe = () => {
-    const variables = { id_shopping: modal.data.id, id_market: me.id_market }
-    shopingCancel({ variables })
+    const variables = { id_sale: modal.data.id, id_market: me.id_market }
+    saleCancel({ variables })
   }
 
   return (
     <Container>
       <ContainerHeader>
-        <Typography variant="h1" color="secondary">Historial de compras</Typography>
+        <Typography variant="h1" color="secondary">Historial de ventas</Typography>
       </ContainerHeader>
       <Table
-        shoppings={shoppings}
+        sales={sales}
         handleOpen={handleOpen}
+        id_market={me.id_market}
       />
       <Modal
         open={modal.open}
@@ -109,7 +110,7 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
         aria-describedby="simple-modal-description"
       >
         <InnerModal>
-          <Typography variant="h4" >¿Estás seguro que quieres anular la factura <strong style={{ color: 'red' }}>{modal.data && modal.data.recipe ? modal.data.recipe : ''}</strong>?</Typography>
+          <Typography variant="h4" >¿Estás seguro que quieres anular la factura <strong style={{ color: 'red' }}>{modal.data && modal.data.id ? `${me.id_market}-${modal.data.id}` : ''}</strong>?</Typography>
           <Button variant="contained" color="secondary" type="submit" fullWidth onClick={handleCancelRecipe}>
             <Typography variant="button">
               {loading ? 'Anulando' : 'Si, anular'}
@@ -121,4 +122,4 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
   )
 }
 
-export default ShoppingHistory
+export default SalesHistory

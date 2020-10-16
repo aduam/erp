@@ -1,6 +1,19 @@
 const { UserInputError } = require('apollo-server-micro')
 const sequelize = require('../database/connection')
-const { Status, Market, Role, Collaborator, User, Provider, Product, TypeProduct, Shopping } = require('../database/models')
+const {
+  Status,
+  Market,
+  Role,
+  Collaborator,
+  User,
+  Provider,
+  Product,
+  TypeProduct,
+  Shopping,
+  Sale,
+  SaleProduct,
+  Customer,
+} = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
 const { createCollaborator, createRole } = require('./collaborator')
@@ -14,6 +27,9 @@ const {
   updateProduct,
   removeProduct,
   shopingCreate,
+  shopingCancel,
+  saleCreate,
+  saleCancel,
 } = require('./product')
 
 const resolvers = {
@@ -37,6 +53,9 @@ const resolvers = {
     removeProduct,
     updateStock,
     shopingCreate,
+    shopingCancel,
+    saleCreate,
+    saleCancel,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -82,7 +101,7 @@ const resolvers = {
       return products
     },
     shoppings: async ({ id }) => {
-      const shoppings = await Shopping.findAll({ where: { id_market: id } })
+      const shoppings = await Shopping.findAll({ where: { id_market: id }, order: [ ['created_at', 'ASC'] ] })
       if (!shoppings) throw new UserInputError('Error al buscar las compras')
       return shoppings
     },
@@ -90,6 +109,16 @@ const resolvers = {
       const shopping = await Shopping.findOne({ where: { id_market: id, id: args.id } })
       if (!shopping) throw new UserInputError('Error al buscar la compra')
       return shopping
+    },
+    sales: async ({ id }) => {
+      const sales = await Sale.findAll({ where: { id_market: id }, order: [ ['created_at', 'ASC'] ] })
+      if (!sales) throw new UserInputError('Error al buscar las ventas')
+      return sales
+    },
+    sale: async ({ id }, args) => {
+      const sale = await Sale.findOne({ where: { id_market: id, id: args.id } })
+      if (!sale) throw new UserInputError('Error al buscar la venta')
+      return sale
     },
   },
   Collaborator: {
@@ -134,7 +163,19 @@ const resolvers = {
       if (!status) throw new UserInputError('Error en el status')
       return status
     },
-  }
+  },
+  Sale: {
+    products: async ({ id }) => {
+      const [results] = await sequelize.query(`SELECT * from products P INNER JOIN sales_products SV on P.id = SV.id_product WHERE SV.id_sale = ${id}`);
+      if (!results) throw new UserInputError('Error en productos')
+      return results
+    },
+    status: async ({ id_status }) => {
+      const status = await Status.findOne({ where: { id: id_status } })
+      if (!status) throw new UserInputError('Error en el status')
+      return status
+    },
+  },
 }
 
 module.exports = resolvers

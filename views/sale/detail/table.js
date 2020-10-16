@@ -45,12 +45,12 @@ const headCells = [
   { id: 'price', numeric: true, disablePadding: false, label: 'Precio base' },
 ];
 
-const TableProvider = ({ shopping, id_organization, id_market }) => {
+const TableProvider = ({ sale, id_organization, id_market }) => {
   const classes = useStyles()
-  const total = shopping && shopping.products && shopping.products.reduce((acc, cur) => acc + Number(cur.price), 0)
+  const total = sale && sale.products && sale.products.reduce((acc, cur) => acc + Number(cur.price), 0)
   return (
     <>
-      {shopping && shopping.products && shopping.products.length > 0 ? (
+      {sale && sale.products && sale.products.length > 0 ? (
         <Paper className={classes.paper}>
           <TableContainer>
             <Table className={classes.table}>
@@ -66,16 +66,16 @@ const TableProvider = ({ shopping, id_organization, id_market }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {shopping.products.map((product) => (
+                {sale.products.map((product) => (
                   <TableRow hover key={product.id}>
                     <TableCell>
-                      {shopping.recipe}
+                      {id_market}-{sale.id}
                     </TableCell>
                     <TableCell>{product.title}</TableCell>
-                    <TableCell>{shopping.status.title}</TableCell>
+                    <TableCell>{sale.status.title}</TableCell>
                     <TableCell>{product.amount}</TableCell>
                     <TableCell>
-                      <CurrencyFormat value={product.price} displayType={'text'} thousandSeparator={true} prefix={'Q'} />
+                      <CurrencyFormat value={product && product.price ? Number(product.price).toFixed(2) : 0.00} displayType={'text'} thousandSeparator={true} prefix={'Q'} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -83,7 +83,7 @@ const TableProvider = ({ shopping, id_organization, id_market }) => {
                   <TableCell rowSpan={1} />
                   <TableCell colSpan={3}>Total</TableCell>
                   <TableCell>
-                    <CurrencyFormat value={total} displayType={'text'} thousandSeparator={true} prefix={'Q'} />
+                    <CurrencyFormat value={total.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'Q'} />
                   </TableCell>
                   {/* <TableCell align="right">{bill.data && bill.data.length > 0 ? ccyFormat(bill.totals.subtotal) : 0}</TableCell> */}
                 </TableRow>

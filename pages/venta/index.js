@@ -1,16 +1,16 @@
 import Head from 'next/head'
-import SaleView from '../../views/sale'
+import SalesView from '../../views/sale'
 import withAuth from '../../lib/withAuth'
 
-const Sale = ({ me }) => {
+const Sales = ({ me }) => {
   return (
     <>
       <Head>
         <title>{`Ventas | ${process.env.NAME_BUSINESS}`}</title>
       </Head>
-      <SaleView me={me} />
+      <SalesView me={me} />
     </>
   )
 }
 
-export default withAuth(Sale)
+export default withAuth(Sales)

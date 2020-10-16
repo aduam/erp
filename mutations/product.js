@@ -69,3 +69,44 @@ export const SHOPPING_CREATE = gql`
     }
   }
 `
+
+export const SHOPPING_CANCEL = gql`
+  mutation ShoppingCancel($id_shopping: Int!, $id_market: Int!) {
+    shopingCancel(id_shopping: $id_shopping, id_market: $id_market) {
+      id
+      recipe
+      status {
+        id
+        title
+      }
+    }
+  }
+`
+
+export const SALE_CREATE = gql`
+  mutation SaleCreate($id_market: Int!, $id_status: Int!, $products: [ProductsShoppingCreateInput!]!) {
+    saleCreate(id_market: $id_market, id_status: $id_status, products: $products) {
+      id
+      products {
+        id
+        code
+        title
+        description
+        stock
+        min_stock
+      }
+    }
+  }
+`
+
+export const SALE_CANCEL = gql`
+  mutation SaleCancel($id_sale: Int!, $id_market: Int!) {
+    saleCancel(id_sale: $id_sale, id_market: $id_market) {
+      id
+      status {
+        id
+        title
+      }
+    }
+  }
+`

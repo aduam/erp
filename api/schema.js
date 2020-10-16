@@ -37,11 +37,22 @@ const typeDefs = gql`
 
     #Shoppings
     shopingCreate(id_market: Int!, id_status: Int!, recipe: String! products: [ProductsShoppingCreateInput!]!): Shopping @auth
+    shopingCancel(id_shopping: Int!, id_market: Int!): Shopping @auth
+
+    #Sales
+    saleCreate(id_market: Int!, id_status: Int!, products:[ProductsShoppingCreateInput!]!): Sale @auth
+    saleCancel(id_sale: Int!, id_market: Int!): Sale @auth
   }
 
   type Status {
     id: Int
     title: String
+  }
+
+  type Sale {
+    id: Int
+    products: [Product]
+    status: Status
   }
 
   type Shopping {
@@ -86,6 +97,8 @@ const typeDefs = gql`
     create_at: Float
     shoppings: [Shopping]
     shopping(id: Int!): Shopping
+    sales: [Sale]
+    sale(id: Int!): Sale
   }
 
   type Product {

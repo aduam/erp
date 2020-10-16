@@ -1,5 +1,6 @@
 const { UserInputError } = require('apollo-server-micro')
-const { TypeProduct, Product, Shopping, ProductShopping } = require('../database/models')
+const { TypeProduct, Product, Shopping, ProductShopping, Sale, SaleProduct, Customer, } = require('../database/models')
+const sequelize = require('../database/connection')
 
 const createTypeProduct = async (_, args) => {
   const typeProduct = await TypeProduct.create({ ...args })
@@ -56,6 +57,94 @@ const shopingCreate = async (_, { id_market, id_status, products, recipe }) => {
   return shopping.reload()
 }
 
+const shopingCancel = async (_, { id_shopping }) => {
+  let isEnough = []
+  const transaction = await sequelize.transaction()
+  const shopping = await Shopping.findOne({ where: { id: id_shopping } })
+  if (!shopping) throw new UserInputError('Error al buscar la compra')
+  if (shopping.id_status === 2) {
+    throw new UserInputError('La compra ya fue anulada')
+  }
+  const shopProduct = await ProductShopping.findAll({ where: { id_shopping } })
+  if (!shopProduct) throw new UserInputError('Error al buscar los productos')
+  shopProduct.forEach(async (prod) => {
+    const product = await Product.findOne({ where: { id: prod.id_product } })
+    if (!product) throw new UserInputError('No existe el producto')
+    const stock = Number(product.stock) - Number(prod.amount)
+    if (stock < 0) {
+      isEnough.push(product.title)
+    }
+    await product.update({ stock }, { transaction })
+  })
+  await shopping.update({ id_status: 2 }, { transaction })
+  console.log(isEnough.length > 0)
+  if (isEnough.length > 0) {
+    throw new UserInputError(`No hay existencia de los productos ${isEnough.join(', ')}`)
+  } else {
+    await transaction.commit()
+  }
+  return shopping
+}
+
+const saleCreate = async (_, { id_market, id_customer, id_status, products }) => {
+  let isEnough = []
+  let prods = []
+  const transaction = await sequelize.transaction()
+
+  const sale = await Sale.create({ id_market, id_customer, id_status })
+  if (!sale) throw new UserInputError('Error al realizar la venta')
+
+  await Promise.all(
+    products.map((product) => {
+      const sp = SaleProduct.create({ ...product, id_sale: sale.id }, { transaction })
+      prods.push(sp)
+      return sp
+    }),
+  )
+
+  prods.forEach(async (prod) => {
+    const product = await Product.findOne({ where: { id: prod.id_product } })
+    if (!product) throw new UserInputError('No existe el producto')
+    const stock = Number(product.stock) - Number(prod.amount)
+    if (stock < 0) {
+      isEnough.push(product.title)
+    }
+    await product.update({ stock }, { transaction })
+  })
+
+  if (isEnough.length > 0) {
+    throw new UserInputError(`No hay existencia de los productos ${isEnough.join(', ')}`)
+  } else {
+    await transaction.commit()
+  }
+  return sale
+}
+
+const saleCancel = async (_, { id_sale }) => {
+  const transaction = await sequelize.transaction()
+
+  const sale = await Sale.findOne({ where: { id: id_sale } })
+  if (!sale) throw new UserInputError('Error al buscar la sale')
+
+  if (sale.id_status === 2) {
+    throw new UserInputError('La venta ya fue anulada')
+  }
+
+  const saleProduct = await SaleProduct.findAll({ where: { id_sale } })
+  if (!saleProduct) throw new UserInputError('Error al buscar los productos')
+
+  saleProduct.forEach(async (prod) => {
+    const product = await Product.findOne({ where: { id: prod.id_product } })
+    if (!product) throw new UserInputError('No existe el producto')
+    const stock = Number(product.stock) + Number(prod.amount)
+    await product.update({ stock }, { transaction })
+  })
+
+  await sale.update({ id_status: 2 }, { transaction })
+  await transaction.commit()
+  return sale
+}
+
 module.exports = {
   createTypeProduct,
   createProduct,
@@ -64,4 +153,7 @@ module.exports = {
   updateProduct,
   removeProduct,
   shopingCreate,
+  shopingCancel,
+  saleCreate,
+  saleCancel,
 }

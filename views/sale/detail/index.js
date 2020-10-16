@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ShoppingHistory = ({ me, isError, isLoading, shopping }) => {
+const ShoppingHistory = ({ me, isError, isLoading, sale }) => {
     if (isLoading) {
     return (
       <LoaderPage>
@@ -41,10 +41,11 @@ const ShoppingHistory = ({ me, isError, isLoading, shopping }) => {
       </Button>
       <div ref={componentRef}>
         <ContainerHeader>
-          <Typography variant="h1" color="secondary">Factura <strong>{shopping.recipe}</strong></Typography>
+          <Typography variant="h1" color="secondary">Factura <strong>{me.id_market}-{sale.id}</strong></Typography>
         </ContainerHeader>
         <Table
-          shopping={shopping}
+          sale={sale}
+          id_market={me.id_market}
         />
       </div>
     </Container>

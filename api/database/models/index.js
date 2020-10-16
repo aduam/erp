@@ -9,6 +9,9 @@ const Product = require('./Product')
 const Shopping = require('./Shopping')
 const ProductShopping = require('./ProductShopping')
 const Status = require('./Status')
+const Customer = require('./Customer')
+const Sale = require('./Sale')
+const SaleProduct = require('./SaleProduct')
 
 module.exports = {
   Market,
@@ -22,4 +25,7 @@ module.exports = {
   Shopping,
   ProductShopping,
   Status,
+  Customer,
+  Sale,
+  SaleProduct,
 }
