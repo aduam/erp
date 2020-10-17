@@ -21,6 +21,8 @@ const typeDefs = gql`
 
     #Collaborator
     createCollaborator(collaborator: CollaboratorInput!, id_role: Int!, id_market: Int, username: String!, id_organization: Int!): Collaborator
+    updateCollaborator(collaborator: CollaboratorInput, id_collaborator: Int!, id_role: Int!, id_market: Int, username: String!, id_organization: Int!): Collaborator @auth
+    removeCollaborator(id_market: Int!, id_organization: Int!, id_collaborator: Int!): Collaborator @auth
 
     #Role
     createRole(title: String!, description: String): Role
@@ -110,6 +112,7 @@ const typeDefs = gql`
     mobile: String
     photo: String
     collaborators: [Collaborator]
+    collaborator(id: Int!): Collaborator
     products: [Product]
     product(id: Int!): Product
     id_organization: Int

@@ -20,18 +20,24 @@ const ProvidersView = ({ isLoading, isError, products, me }) => {
     )
   }
 
+  const isAdmin = me && me.role && me.role.id ? me.role.id : 2
+
   return (
     <Container>
       <ContainerHeader>
         <Typography variant="h1" color="secondary">Productos</Typography>
-        <Button onClick={() => Router.push('/producto/tipo-producto/crear')} variant="outlined" color="secondary">
-          <Typography variant="button" color="secondary">Agregar tipo de producto</Typography>
-        </Button>
-        <Button onClick={() => Router.push('/producto/crear')} variant="contained" color="secondary">
-          <Typography variant="button">Agregar producto</Typography>
-        </Button>
+        {isAdmin === 1 && (
+          <>
+            <Button onClick={() => Router.push('/producto/tipo-producto/crear')} variant="outlined" color="secondary">
+              <Typography variant="button" color="secondary">Agregar tipo de producto</Typography>
+            </Button>
+            <Button onClick={() => Router.push('/producto/crear')} variant="contained" color="secondary">
+              <Typography variant="button">Agregar producto</Typography>
+            </Button>
+          </>
+        )}
       </ContainerHeader>
-      <TableProducts products={products} id_organization={me.id_organization} id_market={me.id_market} />
+      <TableProducts isAdmin={isAdmin} products={products} id_organization={me.id_organization} id_market={me.id_market} />
     </Container>
   )
 }

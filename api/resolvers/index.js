@@ -16,7 +16,7 @@ const {
 } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
-const { createCollaborator, createRole } = require('./collaborator')
+const { createCollaborator, createRole, updateCollaborator, removeCollaborator } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
 const { reports } = require('./reports')
@@ -58,6 +58,8 @@ const resolvers = {
     shopingCancel,
     saleCreate,
     saleCancel,
+    updateCollaborator,
+    removeCollaborator,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -91,6 +93,11 @@ const resolvers = {
       const collaborators = await Collaborator.findAll({ where: { id_market: id } })
       if (!collaborators) throw new UserInputError('Error en colaboradores')
       return collaborators
+    },
+    collaborator: async ({ id }, args) => {
+      const collaborator = await Collaborator.findOne({ where: { id_market: id, id: args.id } })
+      if (!collaborator) throw new UserInputError('Error en colaborador')
+      return collaborator
     },
     products: async ({ id, id_organization }) => {
       const products = await Product.findAll({ where: { id_market: id, id_organization } })

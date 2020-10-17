@@ -14,4 +14,4 @@ const TypeProductCreate = ({ me }) => {
   )
 }
 
-export default withAuth(TypeProductCreate)
+export default withAuth(TypeProductCreate, 1)

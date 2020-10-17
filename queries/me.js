@@ -8,6 +8,10 @@ export const ME = gql`
       surnames
       id_market
       id_organization
+      role {
+        id
+        title
+      }
       market {
         id
         name

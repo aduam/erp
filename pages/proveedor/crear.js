@@ -13,4 +13,4 @@ const CreateProvider = ({ me }) => {
   )
 }
 
-export default withAuth(CreateProvider)
+export default withAuth(CreateProvider, 1)

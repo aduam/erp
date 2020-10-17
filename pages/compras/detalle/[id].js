@@ -23,4 +23,4 @@ const ShoppingDetail = ({ me }) => {
   )
 }
 
-export default withAuth(ShoppingDetail)
+export default withAuth(ShoppingDetail, 1)

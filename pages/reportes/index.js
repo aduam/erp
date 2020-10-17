@@ -17,4 +17,4 @@ const Chart = ({ me }) => {
   )
 }
 
-export default withAuth(Chart)
+export default withAuth(Chart, 1)

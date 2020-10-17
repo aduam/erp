@@ -32,6 +32,7 @@ import {
   ImportContacts,
   AssignmentTurnedIn,
   TrendingUp,
+  NoteAdd,
 } from '@material-ui/icons'
 
 const drawerWidth = 240
@@ -109,9 +110,10 @@ const InnerAppBar = styled.div`
 const Layout = ({ children, router, me }) => {
   const { route } = router
   const classes = useStyles()
-  const theme = useTheme();
-  const [menu, setMenu] = useState(false);
-  const [open, setOpen] = useState(null);
+  const theme = useTheme()
+  const [menu, setMenu] = useState(false)
+  const [open, setOpen] = useState(null)
+  const role = me && me.role && me.role.id ? me.role.id : 2
 
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
@@ -197,22 +199,26 @@ const Layout = ({ children, router, me }) => {
               <ListItemText primary="Inicio" />
             </ListItem>
           </Tooltip>
-          <Tooltip title="Compras">
-            <ListItem button onClick={() => Router.push('/compras')}>
-              <ListItemIcon>
-                <Store color={route === '/compras' ? 'secondary' : 'inherit'} />
-              </ListItemIcon>
-              <ListItemText primary="Compras" />
-            </ListItem>
-          </Tooltip>
-          <Tooltip title="Proveedor">
-            <ListItem button onClick={() => Router.push('/proveedor')}>
-              <ListItemIcon>
-                <Group color={route === '/proveedor' ? 'secondary' : 'inherit'} />
-              </ListItemIcon>
-              <ListItemText primary="Proveedores" />
-            </ListItem>
-          </Tooltip>
+          {role === 1 && (
+            <>
+              <Tooltip title="Compras">
+                <ListItem button onClick={() => Router.push('/compras')}>
+                  <ListItemIcon>
+                    <Store color={route === '/compras' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Compras" />
+                </ListItem>
+              </Tooltip>
+              <Tooltip title="Proveedor">
+                <ListItem button onClick={() => Router.push('/proveedor')}>
+                  <ListItemIcon>
+                    <NoteAdd color={route === '/proveedor' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Proveedores" />
+                </ListItem>
+              </Tooltip>
+            </>
+          )}
           <Tooltip title="Productos">
             <ListItem button onClick={() => Router.push('/producto')}>
               <ListItemIcon>
@@ -229,14 +235,26 @@ const Layout = ({ children, router, me }) => {
               <ListItemText primary="Ventas" />
             </ListItem>
           </Tooltip>
-          <Tooltip title="Reportes">
-            <ListItem button onClick={() => Router.push('/reportes')}>
-              <ListItemIcon>
-                <TrendingUp color={route === '/reportes' ? 'secondary' : 'inherit'} />
-              </ListItemIcon>
-              <ListItemText primary="Reportes" />
-            </ListItem>
-          </Tooltip>
+          {role === 1 && (
+            <>
+              <Tooltip title="Colaboradores">
+                <ListItem button onClick={() => Router.push('/colaborador')}>
+                  <ListItemIcon>
+                    <Group color={route === '/colaborador' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Colaborador" />
+                </ListItem>
+              </Tooltip>
+              <Tooltip title="Reportes">
+                <ListItem button onClick={() => Router.push('/reportes')}>
+                  <ListItemIcon>
+                    <TrendingUp color={route === '/reportes' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Reportes" />
+                </ListItem>
+              </Tooltip>
+            </>
+          )}
         </List>
         <Divider />
         <List>

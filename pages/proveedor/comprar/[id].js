@@ -31,4 +31,4 @@ const ProviderBuy = ({ me }) => {
   )
 }
 
-export default withAuth(ProviderBuy)
+export default withAuth(ProviderBuy, 1)

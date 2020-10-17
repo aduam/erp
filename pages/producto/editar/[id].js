@@ -33,4 +33,4 @@ const ProductCreate = ({ me }) => {
   )
 }
 
-export default withAuth(ProductCreate)
+export default withAuth(ProductCreate, 1)

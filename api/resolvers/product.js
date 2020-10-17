@@ -87,7 +87,6 @@ const shopingCancel = async (_, { id_shopping }) => {
 }
 
 const saleCreate = async (_, { id_market, id_customer, id_status, products }) => {
-  let isEnough = []
   let prods = []
   const transaction = await sequelize.transaction()
 
@@ -95,28 +94,28 @@ const saleCreate = async (_, { id_market, id_customer, id_status, products }) =>
   if (!sale) throw new UserInputError('Error al realizar la venta')
 
   await Promise.all(
-    products.map((product) => {
-      const sp = SaleProduct.create({ ...product, id_sale: sale.id }, { transaction })
+    products.map(async (product) => {
+      const sp = await SaleProduct.create({ ...product, id_sale: sale.id }, { transaction })
       prods.push(sp)
       return sp
     }),
   )
 
-  prods.forEach(async (prod) => {
-    const product = await Product.findOne({ where: { id: prod.id_product } })
-    if (!product) throw new UserInputError('No existe el producto')
-    const stock = Number(product.stock) - Number(prod.amount)
-    if (stock < 0) {
-      isEnough.push(product.title)
-    }
-    await product.update({ stock }, { transaction })
-  })
+  await Promise.all(
+    prods.map(async (prod) => {
+      const product = await Product.findOne({ where: { id: prod.id_product } })
+      if (!product) throw new UserInputError('No existe el producto')
+      const stock = Number(product.stock) - Number(prod.amount)
 
-  if (isEnough.length > 0) {
-    throw new UserInputError(`No hay existencia de los productos ${isEnough.join(', ')}`)
-  } else {
-    await transaction.commit()
-  }
+      if (stock < 0) {
+        throw new UserInputError(`No hay existencia del producto ${product.title}`)
+      }
+      return await product.update({ stock }, { transaction })
+    })
+  )
+
+  await transaction.commit()
+
   return sale
 }
 
@@ -133,12 +132,14 @@ const saleCancel = async (_, { id_sale }) => {
   const saleProduct = await SaleProduct.findAll({ where: { id_sale } })
   if (!saleProduct) throw new UserInputError('Error al buscar los productos')
 
-  saleProduct.forEach(async (prod) => {
-    const product = await Product.findOne({ where: { id: prod.id_product } })
-    if (!product) throw new UserInputError('No existe el producto')
-    const stock = Number(product.stock) + Number(prod.amount)
-    await product.update({ stock }, { transaction })
-  })
+  await Promise.all(
+    saleProduct.map(async (prod) => {
+      const product = await Product.findOne({ where: { id: prod.id_product } })
+      if (!product) throw new UserInputError('No existe el producto')
+      const stock = Number(product.stock) + Number(prod.amount)
+      return await product.update({ stock }, { transaction })
+    }),
+  )
 
   await sale.update({ id_status: 2 }, { transaction })
   await transaction.commit()

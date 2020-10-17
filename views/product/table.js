@@ -48,7 +48,7 @@ const headCells = [
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
-const TableProvider = ({ products, id_organization, id_market }) => {
+const TableProvider = ({ products, id_organization, id_market, isAdmin }) => {
   const classes = useStyles();
 
   const [removeProduct] = useMutation(REMOVE_PRODUCT, {
@@ -103,7 +103,7 @@ const TableProvider = ({ products, id_organization, id_market }) => {
                     <TableCell>
                       <WrapButtonActions>
                         <Tooltip title="Editar detalles">
-                          <Button onClick={() => Router.push('/producto/editar/[id]', `/producto/editar/${element.id}`)}>
+                          <Button onClick={() => Router.push('/producto/editar/[id]', `/producto/editar/${element.id}`)} disabled={isAdmin !== 1}>
                             <Edit />
                           </Button>
                         </Tooltip>

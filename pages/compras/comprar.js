@@ -13,4 +13,4 @@ const Buy = () => {
   )
 }
 
-export default withAuth(Buy)
+export default withAuth(Buy, )

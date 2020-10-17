@@ -208,3 +208,7 @@ CREATE TRIGGER update_products_shopping
   AFTER INSERT ON shoppings_products
   FOR EACH ROW
   EXECUTE PROCEDURE adjust_products_shopping();
+
+
+insert into status (id, title) values (1, 'Aprobado');
+insert into status (id, title) values (2, 'Anulado');
