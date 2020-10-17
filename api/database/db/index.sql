@@ -122,7 +122,7 @@ CREATE TABLE products (
 );
 
 CREATE TABLE status (
-  id SERIAL NOT NULL PRIMARY KEY,
+  id INTEGER NOT NULL PRIMARY KEY,
   title VARCHAR(20) NOT NULL,
   description TEXT
 );
@@ -208,26 +208,3 @@ CREATE TRIGGER update_products_shopping
   AFTER INSERT ON shoppings_products
   FOR EACH ROW
   EXECUTE PROCEDURE adjust_products_shopping();
-
-CREATE OR REPLACE FUNCTION adjust_products_salling()
-  RETURNS TRIGGER
-  LANGUAGE PLPGSQL
-  AS
-$$
-DECLARE
-    stocks integer;
-BEGIN
-	stocks := stock from products where id = NEW.id_product;
-	UPDATE products set stock = (stocks - NEW.amount) WHERE id = NEW.id_product;
-	RETURN NEW;
-END;
-$$
-
-CREATE TRIGGER update_products_selling
-  AFTER INSERT ON sales_products
-  FOR EACH ROW
-  EXECUTE PROCEDURE adjust_products_salling();
-
-CREATE TABLE account_provider (
-  id SERIAL NOT NULL PRIMARY KEY,
-);
