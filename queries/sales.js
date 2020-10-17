@@ -8,6 +8,12 @@ export const GET_SALES = gql`
         id
         sales {
           id
+          customer {
+            id
+            names
+            surnames
+            nit
+          }
           status {
             id
             title
@@ -34,6 +40,13 @@ query GetSales($id_organization: Int!, $id_market: Int!, $id_sale: Int!) {
       id
       sale(id: $id_sale) {
         id
+        customer {
+          id
+          names
+          surnames
+          nit
+          address
+        }
         status {
           id
           title

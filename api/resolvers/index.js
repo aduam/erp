@@ -11,7 +11,6 @@ const {
   TypeProduct,
   Shopping,
   Sale,
-  SaleProduct,
   Customer,
 } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
@@ -19,6 +18,7 @@ const { createMarket } = require('./market')
 const { createCollaborator, createRole, updateCollaborator, removeCollaborator, resetPassword, resetMePassword } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
+const { customerCreate, customerUpdate, customerRemove } = require('./customer')
 const { reports } = require('./reports')
 const {
   createTypeProduct,
@@ -31,6 +31,7 @@ const {
   shopingCancel,
   saleCreate,
   saleCancel,
+  searchCustomer,
 } = require('./product')
 
 const resolvers = {
@@ -39,6 +40,7 @@ const resolvers = {
     me,
     products: getProducts,
     reports,
+    searchCustomer,
   },
   Mutation: {
     createOrganization,
@@ -62,6 +64,9 @@ const resolvers = {
     removeCollaborator,
     resetPassword,
     resetMePassword,
+    customerCreate,
+    customerUpdate,
+    customerRemove,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -89,6 +94,16 @@ const resolvers = {
       if (!type_products) throw new UserInputError('Error en el tipo de productos')
       return type_products
     },
+    customers: async () => {
+      const customers = await Customer.findAll()
+      if (!customers) throw new UserInputError('Error al buscar los clientes')
+      return customers
+    },
+    customer: async (root, { id }) => {
+      const customer = await Customer.findOne({ where: { id } })
+      if (!customer) throw new UserInputError('Error al buscar los clientes')
+      return customer
+    }
   },
   Market: {
     collaborators: async ({ id }) => {
@@ -190,6 +205,14 @@ const resolvers = {
       const status = await Status.findOne({ where: { id: id_status } })
       if (!status) throw new UserInputError('Error en el status')
       return status
+    },
+    customer: async ({ id_customer }) => {
+      let customer
+      if (id_customer) {
+        customer = await Customer.findOne({ where: { id: id_customer } })
+        if (!customer) throw new UserInputError('Error en el cliente')
+      }
+      return customer
     },
   },
   Product: {

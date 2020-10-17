@@ -212,3 +212,5 @@ CREATE TRIGGER update_products_shopping
 
 insert into status (id, title) values (1, 'Aprobado');
 insert into status (id, title) values (2, 'Anulado');
+
+ALTER TABLE customers ADD COLUMN phone varchar(25);

@@ -1,5 +1,5 @@
 const { UserInputError } = require('apollo-server-micro')
-const { TypeProduct, Product, Shopping, ProductShopping, Sale, SaleProduct, Customer, } = require('../database/models')
+const { TypeProduct, Product, Shopping, ProductShopping, Sale, SaleProduct, Customer } = require('../database/models')
 const sequelize = require('../database/connection')
 
 const createTypeProduct = async (_, args) => {
@@ -146,6 +146,12 @@ const saleCancel = async (_, { id_sale }) => {
   return sale
 }
 
+const searchCustomer = async(_, args) => {
+  const customer = await Customer.findOne({ where: { nit: args.nit } })
+  if (!customer) throw new UserInputError('no hay cliente')
+  return customer
+};
+
 module.exports = {
   createTypeProduct,
   createProduct,
@@ -157,4 +163,5 @@ module.exports = {
   shopingCancel,
   saleCreate,
   saleCancel,
+  searchCustomer,
 }

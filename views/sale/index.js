@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useQuery, useMutation } from '@apollo/client'
 import { useForm, Controller } from 'react-hook-form'
 import { useReactToPrint } from 'react-to-print'
-
 import {
   TextField,
   Typography,
@@ -29,6 +28,7 @@ import { Container, ContainerHeader } from '../../components'
 import { GET_ALL_PRODUCTS } from '../../queries/product'
 import { SALE_CREATE } from '../../mutations/product'
 import { calculateTotal, calculateIva, calculateSubtotal } from '../../lib/utils'
+import CustomerData from './customerData'
 
 const TAX_RATE = 0.12;
 
@@ -103,6 +103,7 @@ const SaleView = ({ me }) => {
   })
 
   const { register, control, handleSubmit } = useForm()
+  const [customer, setCustomer] = useState(null)
   const [bill, setBill] = useState({
     totals: {
       subtotal: 0,
@@ -166,10 +167,15 @@ const SaleView = ({ me }) => {
     }
   }
 
+  const handleExistClient = (data) => {
+    setCustomer(data)
+  }
+
   const handleSale = () => {
     const variables = {
       id_market: me.id_market,
       id_status: 1,
+      id_customer: customer && customer.data && customer.data.id ? customer.data.id : null,
       products: bill.data.map(e => ({
         amount: e.cant,
         price: e.price,
@@ -187,7 +193,7 @@ const SaleView = ({ me }) => {
           Ver historial de ventas
         </Button>
         <WrapButtonInput>
-          <Button onClick={handleSale} variant="contained" color="secondary" disabled={bill.data.length < 1 || loadingSale}>
+          <Button onClick={handleSale} variant="contained" color="secondary" disabled={bill.data.length < 1 || loadingSale || !customer}>
             {loadingSale ? 'Vendiendo' : 'Vender'}
           </Button>
         </WrapButtonInput>
@@ -198,6 +204,7 @@ const SaleView = ({ me }) => {
         </Button>
       </WrapButtonAddProduct>
       <TableContainer component={Paper} ref={componentRef}>
+        <CustomerData handleExistClient={handleExistClient} />
         <Table className={classes.table} aria-label="spanning table">
           <TableHead>
             <TableRow>

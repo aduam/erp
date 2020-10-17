@@ -8,6 +8,8 @@ const typeDefs = gql`
     me: Me @auth
     #Report
     reports: Report @auth
+    #Searching
+    searchCustomer(nit: String!): Customer @auth
   }
 
   type Mutation {
@@ -46,8 +48,23 @@ const typeDefs = gql`
     shopingCancel(id_shopping: Int!, id_market: Int!): Shopping @auth
 
     #Sales
-    saleCreate(id_market: Int!, id_status: Int!, products:[ProductsShoppingCreateInput!]!): Sale @auth
+    saleCreate(id_market: Int!, id_status: Int!, products:[ProductsShoppingCreateInput!]! id_customer: Int): Sale @auth
     saleCancel(id_sale: Int!, id_market: Int!): Sale @auth
+
+    #Customer
+    customerCreate(customer: CustomerInput!): Customer @auth
+    customerUpdate(customer: CustomerUpdateInput, id_customer: Int!): Customer @auth
+    customerRemove(id_customer: Int!): Customer @auth
+  }
+
+  type Customer {
+    id: Int
+    names: String
+    surnames: String
+    nit: String
+    phone: String
+    photo_profile: String
+    address: String
   }
 
   type ReportSale {
@@ -76,6 +93,7 @@ const typeDefs = gql`
     id: Int
     products: [Product]
     status: Status
+    customer: Customer
   }
 
   type Shopping {
@@ -101,6 +119,8 @@ const typeDefs = gql`
     providers: [Provider]
     provider(id: Int!): Provider
     type_products: [TypeProduct]
+    customer(id: Int!): Customer
+    customers: [Customer]
   }
 
   type Market {
@@ -222,6 +242,22 @@ const typeDefs = gql`
     surnames: String!
     identification: String!
     photo_profile: String
+  }
+
+  input CustomerInput {
+    names: String!
+    surnames: String!
+    nit: String!
+    address: String!
+    phone: String
+  }
+
+  input CustomerUpdateInput {
+    names: String
+    surnames: String
+    nit: String
+    address: String
+    phone: String
   }
 
   input ProviderInput {

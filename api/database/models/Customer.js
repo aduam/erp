@@ -18,6 +18,7 @@ const Customer = sequelize.define('customers', {
   address: {
     type: Sequelize.TEXT,
   },
+  phone: Sequelize.STRING(25,)
 }, {
   timestamps: true,
   paranoi: true,

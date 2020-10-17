@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
+import styled from 'styled-components'
 import CurrencyFormat from 'react-currency-format'
 import Router from 'next/router'
 import {
@@ -37,6 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Wrapp = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+`
+
+const WrappInput = styled.div`
+  margin-bottom: 10px;
+`
+
 const headCells = [
   { id: 'recipe', numeric: false, disablePadding: true, label: 'Factura' },
   { id: 'product', numeric: true, disablePadding: false, label: 'Producto' },
@@ -53,6 +64,19 @@ const TableProvider = ({ sale, id_organization, id_market }) => {
       {sale && sale.products && sale.products.length > 0 ? (
         <Paper className={classes.paper}>
           <TableContainer>
+            {sale && sale.customer && sale.customer.id && (
+              <Wrapp>
+                <WrappInput>
+                  <Typography variant="body1">{`NIT: ${sale.customer.nit}`}</Typography>
+                </WrappInput>
+                <WrappInput>
+                  <Typography variant="body1">{`Nombre: ${sale.customer.names} ${sale.customer.surnames}`}</Typography>
+                </WrappInput>
+                <WrappInput>
+                  <Typography variant="body1">{`Dirección: ${sale.customer.address}`}</Typography>
+                </WrappInput>
+              </Wrapp>
+            )}
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>

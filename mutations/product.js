@@ -109,8 +109,8 @@ export const SHOPPING_CANCEL = gql`
 `
 
 export const SALE_CREATE = gql`
-  mutation SaleCreate($id_market: Int!, $id_status: Int!, $products: [ProductsShoppingCreateInput!]!) {
-    saleCreate(id_market: $id_market, id_status: $id_status, products: $products) {
+  mutation SaleCreate($id_market: Int!, $id_status: Int!, $products: [ProductsShoppingCreateInput!]!, $id_customer: Int) {
+    saleCreate(id_market: $id_market, id_status: $id_status, products: $products, id_customer: $id_customer) {
       id
       products {
         id

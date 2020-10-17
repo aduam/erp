@@ -23,6 +23,7 @@ import {
 import Logout from '@material-ui/core/Menu'
 import {
   Menu,
+  Assignment,
   ChevronLeft,
   ChevronRight,
   Home,
@@ -244,6 +245,14 @@ const Layout = ({ children, router, me }) => {
                     <Group color={route === '/colaborador' ? 'secondary' : 'inherit'} />
                   </ListItemIcon>
                   <ListItemText primary="Colaborador" />
+                </ListItem>
+              </Tooltip>
+              <Tooltip title="Clientes">
+                <ListItem button onClick={() => Router.push('/cliente')}>
+                  <ListItemIcon>
+                    <Assignment color={route === '/cliente' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Cliente" />
                 </ListItem>
               </Tooltip>
               <Tooltip title="Reportes">

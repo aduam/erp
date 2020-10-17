@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 const headCells = [
   { id: 'recipe', numeric: false, disablePadding: true, label: 'Factura' },
-  { id: 'description', numeric: true, disablePadding: false, label: 'Descripción' },
+  { id: 'nit', numeric: true, disablePadding: false, label: 'NIT cliente' },
+  { id: 'nombre', numeric: true, disablePadding: false, label: 'Nombre cliente' },
   { id: 'status', numeric: true, disablePadding: false, label: 'Estado' },
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
@@ -70,7 +71,8 @@ const TableProvider = ({ sales, handleOpen, id_market }) => {
                     <TableCell>
                       {`${id_market}-${shop.id}`}
                     </TableCell>
-                    <TableCell>Aquí va la descripción</TableCell>
+                    <TableCell>{shop.customer && shop.customer.id ? shop.customer.nit : ''}</TableCell>
+                    <TableCell>{shop.customer && shop.customer.id ? `${shop.customer.names} ${shop.customer.surnames}` : ''}</TableCell>
                     <TableCell>
                       <Typography color={shop.status.title.toLowerCase() === 'anulado' ? 'error': ''}>
                         {shop.status.title}
