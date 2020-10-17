@@ -13,10 +13,10 @@ const login = async (_, { username, password }, ctx) => {
   const collaborator = await Collaborator.findOne({ where: { id: me.id } })
   if (!collaborator) throw new UserInputError('Collaborator no existe')
 
-  const token = await jwt.sign({ id: collaborator.id }, 'secret', { expiresIn: '6h' })
-  const refresh_token = await jwt.sign({ id: collaborator.id }, 'secret-refresh', { expiresIn: '12h' })
+  const token = await jwt.sign({ id: collaborator.id }, process.env.SECRET, { expiresIn: '10h' })
+  const refresh_token = await jwt.sign({ id: collaborator.id }, process.env.SECRET_REFRESH, { expiresIn: '12h' })
   const collaboratorWithTokens = { ...collaborator.toJSON(), token, refresh_token }
-  ctx.payload = { ...jwt.verify(token, 'secret'), token }
+  ctx.payload = { ...jwt.verify(token, process.env.SECRET), token }
   return collaboratorWithTokens
 }
 

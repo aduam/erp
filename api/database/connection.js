@@ -4,6 +4,7 @@ const DB_USER = process.env.DB_USER || 'studios'
 const DB_PASSWORD = process.env.DB_PASSWORD || 'studios'
 const DB_HOST = process.env.DB_HOST || 'localhost'
 const DB_NAME = process.env.DB_NAME || 'studios'
+const DB_PORT = process.env.DB_PORT || '5425'
 
 const sequelize = new Sequelize(
   DB_NAME,
@@ -11,7 +12,7 @@ const sequelize = new Sequelize(
   DB_PASSWORD,
   {
     host: DB_HOST,
-    port: '5425',
+    port: DB_PORT,
     dialect: 'postgres',
     pool: {
       max: 5,
