@@ -167,6 +167,7 @@ const Layout = ({ children, router, me }) => {
               onClose={handleCloseMenu}
             >
               <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+              <MenuItem onClick={() => Router.push('/reinicio')}>Reinicio contraseña</MenuItem>
             </Logout>
           </div>
         </InnerAppBar>

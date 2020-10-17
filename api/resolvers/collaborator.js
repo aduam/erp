@@ -34,9 +34,33 @@ const removeCollaborator = async (_, args) => {
   return collaborator
 }
 
+const resetPassword = async (_, args) => {
+  const SALT = 7
+  const collaborator = await Collaborator.findOne({ where: { id: args.id_collaborator } })
+  if (!collaborator) throw Error('Error al encontrar el colaborador')
+  const pass = await bcrypt.hash('studios', SALT)
+  const user = await User.findOne({ where: { id: collaborator.id } })
+  if (!user) throw Error(`Error en el colaborador: ${collaborator.names}`)
+  user.update({ password: pass })
+  return collaborator
+}
+
+const resetMePassword = async (_, args, ctx) => {
+  const SALT = 7
+  const collaborator = await Collaborator.findOne({ where: { id: ctx.payload.id } })
+  if (!collaborator) throw Error('Error al encontrar el colaborador')
+  const pass = await bcrypt.hash(args.password, SALT)
+  const user = await User.findOne({ where: { id: collaborator.id } })
+  if (!user) throw Error(`Error en el colaborador: ${collaborator.names}`)
+  user.update({ password: pass })
+  return collaborator
+}
+
 module.exports = {
   createCollaborator,
   createRole,
   updateCollaborator,
   removeCollaborator,
+  resetPassword,
+  resetMePassword,
 }

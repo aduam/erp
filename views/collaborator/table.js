@@ -14,10 +14,10 @@ import {
   Tooltip,
   Button,
 } from '@material-ui/core'
-import { DeleteForever, Edit, Visibility } from '@material-ui/icons'
+import { DeleteForever, Edit, Visibility, RotateLeft } from '@material-ui/icons'
 import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
-import { REMOVE_COLLABORATOR } from '../../mutations/collaborator'
+import { REMOVE_COLLABORATOR, RESET_PASSWORD } from '../../mutations/collaborator'
 import { GET_COLLABORATORS } from '../../queries/collaborator'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,37 +39,10 @@ const headCells = [
   { id: 'actions', numeric: true, disablePadding: false, label: 'Acciones' },
 ];
 
-const updateCache = (client, { data: { removeCollaborator } }, id) => {
-  const cache = client.readQuery({
-    query: GET_COLLABORATORS,
-    variables: { id }
-  })
-
-  const collaborators = cache.organization.market.collaborators.filter((e) => e.id !== removeCollaborator.id)
-
-  const data = {
-    ...cache,
-    organization: {
-      ...cache.organization,
-      market: {
-        ...cache.organization.market,
-        collaborators,
-      }
-    },
-  }
-
-  client.writeQuery({
-    query: GET_COLLABORATORS,
-    variables: { id },
-    data,
-  })
-}
-
 const TableProvider = ({ collaborators, id_organization, me }) => {
   const classes = useStyles();
 
   const [removeCollaborator] = useMutation(REMOVE_COLLABORATOR, {
-    //update: (cache, data) => updateCache(cache, data, id_organization),
     refetchQueries: [{ query: GET_COLLABORATORS, variables: { id_organization: me.id_organization, id_market: me.id_market }}],
     onCompleted: () => {
       Swal.fire('Colaborador eliminado!', '', 'success')
@@ -79,8 +52,16 @@ const TableProvider = ({ collaborators, id_organization, me }) => {
     },
   })
 
+  const [resetPassword] = useMutation(RESET_PASSWORD, {
+    onCompleted: () => {
+      Swal.fire('Contraseña reiniciada!', '', 'success')
+    },
+    onError: (err) => {
+      Swal.fire('Hubo un error al reiniciar contraseña!', '', 'error')
+    },
+  })
+
   const handleDelete = (e, collaborator) => {
-    console.log(collaborator)
     e.stopPropagation()
     Swal.fire({
       title: `¿Estás seguro que quieres eliminar el colaborador "${collaborator.names} ${collaborator.surnames}"?`,
@@ -93,6 +74,23 @@ const TableProvider = ({ collaborators, id_organization, me }) => {
             id_collaborator: collaborator.id,
             id_market: me.id_market,
             id_organization: me.id_organization,
+          }
+        })
+      }
+    })
+  }
+
+  const handleReset = (e, collaborator) => {
+    e.stopPropagation()
+    Swal.fire({
+      title: `¿Estás seguro que quieres reiniciar la contraseña de "${collaborator.names} ${collaborator.surnames}"?`,
+      showCancelButton: true,
+      confirmButtonText: `Reiniciar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        resetPassword({
+          variables: {
+            id_collaborator: collaborator.id,
           }
         })
       }
@@ -133,11 +131,11 @@ const TableProvider = ({ collaborators, id_organization, me }) => {
                         <Edit />
                       </Button>
                     </Tooltip>
-                    {/* <Tooltip title="Ver productos">
-                      <Button onClick={() => Router.push('/proveedor/producto/[id]', `/proveedor/producto/${element.id}`)}>
-                        <Visibility />
+                    <Tooltip title="Reiniciar contraseña">
+                      <Button onClick={(e) => handleReset(e, element)}>
+                        <RotateLeft />
                       </Button>
-                    </Tooltip> */}
+                    </Tooltip>
                   </WrapButtonActions>
                 </TableCell>
               </TableRow>

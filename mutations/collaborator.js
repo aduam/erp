@@ -56,3 +56,19 @@ export const REMOVE_COLLABORATOR = gql`
     }
   }
 `
+
+export const RESET_ME_PASSWORD = gql`
+  mutation ResetMePassword($password: String!) {
+    resetMePassword(password: $password) {
+      id
+    }
+  }
+`
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($id_collaborator: Int!) {
+    resetPassword(id_collaborator: $id_collaborator) {
+      id
+    }
+  }
+`

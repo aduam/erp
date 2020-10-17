@@ -127,7 +127,7 @@ const EditarProviderView = ({ me, isLoading, isError, collaborator, id_collabora
               as={TextField}
               control={control}
               id="username"
-              defaultValue={collaborator.identification}
+              defaultValue={collaborator.user.username}
               name="username"
               label="Nombre de usuario"
               fullWidth

@@ -16,7 +16,7 @@ const {
 } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
-const { createCollaborator, createRole, updateCollaborator, removeCollaborator } = require('./collaborator')
+const { createCollaborator, createRole, updateCollaborator, removeCollaborator, resetPassword, resetMePassword } = require('./collaborator')
 const { login, me } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
 const { reports } = require('./reports')
@@ -60,6 +60,8 @@ const resolvers = {
     saleCancel,
     updateCollaborator,
     removeCollaborator,
+    resetPassword,
+    resetMePassword,
   },
   Organization: {
     markets: async ({ id }) => {
