@@ -53,7 +53,7 @@ const paidAccount = async (_, args) => {
   if (args.amount > (parseFloat(getAccount.amount) - parseFloat(getAccount.debit))) {
     throw new UserInputError('El monto es mayor a la deuda')
   }
-  const getProjectionFees = await ProjectionFee.findAll({ where: { id_account: getAccount.id }, order: [['due_date', 'DESC']] })
+  const getProjectionFees = await ProjectionFee.findAll({ where: { id_account: getAccount.id }, order: [['due_date', 'ASC']] })
   if (!getProjectionFees) throw new UserInputError('La proyección no existe')
   const paid = Paid.create({ ...args })
   if (!paid) throw new UserInputError('Error al crear pago')

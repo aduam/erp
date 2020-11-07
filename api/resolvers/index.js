@@ -231,7 +231,7 @@ const resolvers = {
   },
   Account: {
     projectionFees: async ({ id }) => {
-      const projectionFees = await ProjectionFee.findAll({ where: { id_account: id }, order: [['due_date', 'DESC']] })
+      const projectionFees = await ProjectionFee.findAll({ where: { id_account: id }, order: [['due_date', 'ASC']] })
       if (!projectionFees) throw new UserInputError('Error en la proyección de los pagos')
       return projectionFees
     },
