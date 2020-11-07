@@ -12,6 +12,8 @@ const {
   Shopping,
   Sale,
   Customer,
+  ProjectionFee,
+  Paid,
 } = require('../database/models')
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
@@ -33,6 +35,7 @@ const {
   saleCancel,
   searchCustomer,
 } = require('./product')
+const { accounts, account, accountCreate, paidAccount } = require('./account')
 
 const resolvers = {
   Query: {
@@ -41,6 +44,8 @@ const resolvers = {
     products: getProducts,
     reports,
     searchCustomer,
+    accounts,
+    account,
   },
   Mutation: {
     createOrganization,
@@ -67,6 +72,8 @@ const resolvers = {
     customerCreate,
     customerUpdate,
     customerRemove,
+    accountCreate,
+    paidAccount,
   },
   Organization: {
     markets: async ({ id }) => {
@@ -221,7 +228,24 @@ const resolvers = {
       if (!type_product) throw new UserInputError('Error en el tipo de producto')
       return type_product
     },
-  }
+  },
+  Account: {
+    projectionFees: async ({ id }) => {
+      const projectionFees = await ProjectionFee.findAll({ where: { id_account: id }, order: [['due_date', 'DESC']] })
+      if (!projectionFees) throw new UserInputError('Error en la proyección de los pagos')
+      return projectionFees
+    },
+    paids: async ({ id }) => {
+      const paids = await Paid.findAll({ where: { id_account: id } });
+      if (!paids) throw new UserInputError('Error al buscar los pagos')
+      return paids
+    },
+    customer: async ({ id_customer }) => {
+      const customer = await Customer.findOne({ where: { id: id_customer } })
+      if (!customer) throw new UserInputError('Error al buscar el cliente')
+      return customer
+    },
+  },
 }
 
 module.exports = resolvers

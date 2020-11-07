@@ -34,6 +34,7 @@ import {
   AssignmentTurnedIn,
   TrendingUp,
   NoteAdd,
+  AccountBalanceWallet,
 } from '@material-ui/icons'
 
 const drawerWidth = 240
@@ -253,6 +254,14 @@ const Layout = ({ children, router, me }) => {
                     <Assignment color={route === '/cliente' ? 'secondary' : 'inherit'} />
                   </ListItemIcon>
                   <ListItemText primary="Cliente" />
+                </ListItem>
+              </Tooltip>
+              <Tooltip title="Cuentas de clientes">
+                <ListItem button onClick={() => Router.push('/cuentas')}>
+                  <ListItemIcon>
+                    <AccountBalanceWallet color={route === '/cuentas' ? 'secondary' : 'inherit'} />
+                  </ListItemIcon>
+                  <ListItemText primary="Cuentas clientes" />
                 </ListItem>
               </Tooltip>
               <Tooltip title="Reportes">

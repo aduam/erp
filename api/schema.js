@@ -8,6 +8,9 @@ const typeDefs = gql`
     me: Me @auth
     #Report
     reports: Report @auth
+    #Accounts
+    accounts: [Account] @auth
+    account(id: Int!): Account @auth
     #Searching
     searchCustomer(nit: String!): Customer @auth
   }
@@ -55,6 +58,35 @@ const typeDefs = gql`
     customerCreate(customer: CustomerInput!): Customer @auth
     customerUpdate(customer: CustomerUpdateInput, id_customer: Int!): Customer @auth
     customerRemove(id_customer: Int!): Customer @auth
+
+    #Account
+    accountCreate(id_customer: Int!, account_info: AccountCreateInput!): Account @auth
+
+    #Paid
+    paidAccount(id_account: Int!, amount: Float!): Account @auth
+  }
+
+  type Paids {
+    id: Int
+    amount: Float
+  }
+
+  type ProjectionFees {
+    id: Int
+    amount: Float
+    due_date: Float
+    paid: Float
+  }
+
+  type Account {
+    id: Int
+    term: Float
+    interest: Float
+    customer: Customer
+    amount: Float
+    debit: Float
+    projectionFees: [ProjectionFees]
+    paids: [Paids]
   }
 
   type Customer {
@@ -303,6 +335,12 @@ const typeDefs = gql`
     amount: Int!
     price: Float!
     id_product: Int!
+  }
+
+  input AccountCreateInput {
+    term: Float!
+    interest: Float!
+    amount: Float!
   }
 `
 

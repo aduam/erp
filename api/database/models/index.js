@@ -12,6 +12,9 @@ const Status = require('./Status')
 const Customer = require('./Customer')
 const Sale = require('./Sale')
 const SaleProduct = require('./SaleProduct')
+const Paid = require('./Paid')
+const Account = require('./Account')
+const ProjectionFee = require('./ProjectionFee')
 
 module.exports = {
   Market,
@@ -28,4 +31,7 @@ module.exports = {
   Customer,
   Sale,
   SaleProduct,
+  Paid,
+  Account,
+  ProjectionFee,
 }

@@ -214,3 +214,37 @@ insert into status (id, title) values (1, 'Aprobado');
 insert into status (id, title) values (2, 'Anulado');
 
 ALTER TABLE customers ADD COLUMN phone varchar(25);
+
+CREATE TABLE accounts (
+  id SERIAL NOT NULL PRIMARY KEY,
+  term INTEGER NOT NULL,
+  interest NUMERIC(3) NOT NULL,
+  amount NUMERIC(9, 2) NOT NULL,
+  debit NUMERIC(9,2) NOT NULL DEFAULT 0,
+  id_customer INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_customer) REFERENCES customers(id)
+);
+
+CREATE TABLE projection_fees (
+  id SERIAL NOT NULL PRIMARY KEY,
+  amount NUMERIC(9, 2) NOT NULL,
+  due_date NUMERIC(13) NOT NULL,
+  paid NUMERIC(9, 2),
+  id_account INTEGER NOT NULL,
+  FOREIGN KEY (id_account) REFERENCES accounts(id)
+);
+
+CREATE TABLE paids (
+  id SERIAL NOT NULL PRIMARY KEY,
+  id_account INTEGER NOT NULL,
+  amount NUMERIC(9, 2) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  delete_at TIMESTAMP,
+  FOREIGN KEY (id_account) REFERENCES accounts(id)
+);
+
+ALTER TABLE customers ADD COLUMN indentification VARCHAR(25);
