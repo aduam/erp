@@ -10,7 +10,7 @@ const Provider = ({ me }) => {
   const urlId = router.query.id
   const id = !!urlId && !!parseInt(urlId, 10) ? Math.abs(parseInt(urlId, 10)) : null
 
-  const { loading, error, data } = useQuery(GET_CUSTOMER, { variables: { id_organization: me.id_organization, id_customer: id }})
+  const { loading, error, data } = useQuery(GET_CUSTOMER, { variables: { id_organization: me.id_organization, id_customer: id }, fetchPolicy: 'network-only' })
   const customer = data && data.organization && data.organization.customer ? data.organization.customer : {}
 
   return (

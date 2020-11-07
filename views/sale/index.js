@@ -119,7 +119,8 @@ const SaleView = ({ me }) => {
     variables: {
       id_organization: me.id_organization,
       id_market: me.id_market,
-    }
+    },
+    fetchPolicy: 'network-only'
   })
   const [saleCreate, { loading: loadingSale }] = useMutation(SALE_CREATE, {
     onCompleted: () => {

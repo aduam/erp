@@ -5,7 +5,7 @@ import withAuth from '../../../lib/withAuth'
 import { TYPE_PRODUCTS } from '../../../queries/product'
 
 const ProductCreate = ({ me }) => {
-  const { loading, error, data } = useQuery(TYPE_PRODUCTS, { variables: { id_organization: me.id_organization } });
+  const { loading, error, data } = useQuery(TYPE_PRODUCTS, { variables: { id_organization: me.id_organization }, fetchPolicy: 'network-only' });
   const typeProducts = data && data.organization && data.organization.type_products ? data.organization.type_products : []
   return (
     <>
