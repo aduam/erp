@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useQuery, useMutation } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { useReactToPrint } from 'react-to-print'
+import { graphError } from '../../lib/graphError'
 
 import {
   TextField,
@@ -137,7 +138,8 @@ const SaleView = ({ me }) => {
       setShopText('')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al realizar la compra!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 

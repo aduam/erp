@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput } from '../../components'
 import { COLLABORATOR_CREATE } from '../../mutations/collaborator'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,11 +39,12 @@ const CreateProviderView = ({ me }) => {
         Router.push('/colaborador')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al crear el colaborador!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

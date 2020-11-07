@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput, LoaderPage, ErrorPage, Loading } from '../../components'
 import { EDIT_PROVIDER } from '../../mutations/provider'
+import { graphError } from '../../lib/graphError'
 
 const EditarProviderView = ({ me, isLoading, isError, provider, id_provider }) => {
   const { control, handleSubmit } = useForm()
@@ -22,11 +23,12 @@ const EditarProviderView = ({ me, isLoading, isError, provider, id_provider }) =
         Router.push('/proveedor')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al actualizar el proveedor!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

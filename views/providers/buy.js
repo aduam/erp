@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput, ErrorPage, LoaderPage, Loading } from '../../components'
 import { CREATE_PRODUCT } from '../../mutations/product'
+import { graphError } from '../../lib/graphError'
 
 const ProviderBuyView = ({ me, type_products, id_provider, provider, isLoading, isError }) => {
   const { register, handleSubmit } = useForm()
@@ -25,11 +26,12 @@ const ProviderBuyView = ({ me, type_products, id_provider, provider, isLoading, 
         Router.push('/proveedor')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al realizar la compra!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

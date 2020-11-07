@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput, ErrorPage, LoaderPage, Loading } from '../../../components'
 import { UPDATE_PRODUCT } from '../../../mutations/product'
+import { graphError } from '../../../lib/graphError'
 
 const ProductEditView = ({ me, type_products, product, isLoading, isError, isLoadingType, isErrorType }) => {
   if (isLoading || isLoadingType) {
@@ -33,11 +34,11 @@ const ProductEditView = ({ me, type_products, product, isLoading, isError, isLoa
       }, 2000)
     },
     onError: (err) => {
-      console.log(err)
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al realizar actualizar el producto!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

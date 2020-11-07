@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput } from '../../components'
 import { CREATE_PROVIDER } from '../../mutations/provider'
+import { graphError } from '../../lib/graphError'
 
 const CreateProviderView = ({ me }) => {
   const { register, handleSubmit } = useForm()
@@ -22,11 +23,12 @@ const CreateProviderView = ({ me }) => {
         Router.push('/proveedor')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al crear el proveedor!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

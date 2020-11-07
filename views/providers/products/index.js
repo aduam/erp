@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, ContainerHeader, LoaderPage, ErrorPage, Loading } from '../../../components'
 import TableProducts from './table'
 import { UPDATE_ADD_PRODUCT } from '../../../mutations/product'
+import { graphError } from '../../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -72,10 +73,11 @@ const ProductsProviderView = ({ me, isLoading, isError, products, provider }) =>
       })
     },
     onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error mientra se actualizaba el stock del producto!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

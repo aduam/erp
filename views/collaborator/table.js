@@ -19,6 +19,7 @@ import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
 import { REMOVE_COLLABORATOR, RESET_PASSWORD } from '../../mutations/collaborator'
 import { GET_COLLABORATORS } from '../../queries/collaborator'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,8 @@ const TableProvider = ({ collaborators, id_organization, me }) => {
       Swal.fire('Colaborador eliminado!', '', 'success')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al eliminar el colaborador!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 
@@ -57,7 +59,8 @@ const TableProvider = ({ collaborators, id_organization, me }) => {
       Swal.fire('Contraseña reiniciada!', '', 'success')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al reiniciar contraseña!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 

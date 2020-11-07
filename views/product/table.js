@@ -19,6 +19,7 @@ import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
 import { REMOVE_PRODUCT } from '../../mutations/product'
 import { GET_PRODUCTS } from '../../queries/product'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +59,8 @@ const TableProvider = ({ products, id_organization, id_market, isAdmin }) => {
       Swal.fire('Producto eliminado!', '', 'success')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al eliminar el producto!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 

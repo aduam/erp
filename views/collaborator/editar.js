@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput, LoaderPage, ErrorPage, Loading } from '../../components'
 import { COLLABORATOR_UPDATE } from '../../mutations/collaborator'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -43,11 +44,12 @@ const EditarProviderView = ({ me, isLoading, isError, collaborator, id_collabora
         Router.push('/colaborador')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al actualizar el colaborador!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

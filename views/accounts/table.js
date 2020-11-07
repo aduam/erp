@@ -19,6 +19,7 @@ import CurrencyFormat from 'react-currency-format'
 import { WrapButtonActions } from '../../components'
 import { CUSTOMER_REMOVE } from '../../mutations/customer'
 import { GET_CUSTOMERS } from '../../queries/customer'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,10 +57,11 @@ const TableProvider = ({ accounts, me, setModal, setModalData }) => {
       })
     },
     onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al eliminar el cliente!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

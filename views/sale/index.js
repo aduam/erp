@@ -29,6 +29,7 @@ import { GET_ALL_PRODUCTS } from '../../queries/product'
 import { SALE_CREATE } from '../../mutations/product'
 import { calculateTotal, calculateIva, calculateSubtotal } from '../../lib/utils'
 import CustomerData from './customerData'
+import { graphError } from '../../lib/graphError'
 
 const TAX_RATE = 0.12;
 
@@ -135,7 +136,8 @@ const SaleView = ({ me }) => {
       })
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al realizar la compra!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 

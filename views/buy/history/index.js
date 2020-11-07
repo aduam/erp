@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, ContainerHeader, LoaderPage, ErrorPage, Loading } from '../../../components'
 import { SHOPPING_CANCEL } from '../../../mutations/product'
 import Table from './table'
+import { graphError } from '../../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -76,11 +77,12 @@ const ShoppingHistory = ({ me, isError, isLoading, shoppings }) => {
       })
       handleClose()
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'No se ha anulado la factura!, hubo un error',
+        title: error,
         showConfirmButton: false,
         timer: 4000
       })

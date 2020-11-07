@@ -19,6 +19,7 @@ import Swal from 'sweetalert2'
 import { WrapButtonActions } from '../../components'
 import { REMOVE_PROVIDER } from '../../mutations/provider'
 import { GET_PROVIDERS } from '../../queries/provider'
+import { graphError } from '../../lib/graphError'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +72,8 @@ const TableProvider = ({ providers, id_organization }) => {
       Swal.fire('Proveedor eliminado!', '', 'success')
     },
     onError: (err) => {
-      Swal.fire('Hubo un error al eliminar el proveedor!', '', 'error')
+      const error = graphError(err)
+      Swal.fire(error, '', 'error')
     },
   })
 

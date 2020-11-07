@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Typography, TextField, Button } from '@material-ui/core'
 import { RESET_ME_PASSWORD } from '../../mutations/collaborator'
+import { graphError } from '../../lib/graphError'
 
 const Form = styled.form`
   display: flex;
@@ -31,11 +32,12 @@ const PasswordView = () => {
         Router.push('/')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'No se reinició la contraseña!, hubo un error',
+        title: error,
         showConfirmButton: false,
         timer: 4000
       })

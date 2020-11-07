@@ -7,6 +7,7 @@ import Router from 'next/router'
 import { TextField, Button, Typography, CircularProgress, Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { LOGIN } from '../../mutations/me'
+import { graphError } from '../../lib/graphError'
 
 const Container = styled.main`
   width: 100%;
@@ -62,7 +63,8 @@ const LoginView = () => {
       Router.push('/')
     },
     onError: (err) => {
-      handleOpenNotification('error', 'el usuario o contraseña están incorrectos')
+      const error = graphError(err)
+      handleOpenNotification('error', error)
     }
   })
 

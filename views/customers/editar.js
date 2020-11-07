@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput, LoaderPage, ErrorPage, Loading } from '../../components'
 import { CUSTOMER_UPDATE } from '../../mutations/customer'
+import { graphError } from '../../lib/graphError'
 
 const EditarProviderView = ({ me, isLoading, isError, customer, id_customer }) => {
   if (isLoading) {
@@ -30,11 +31,12 @@ const EditarProviderView = ({ me, isLoading, isError, customer, id_customer }) =
         Router.push('/cliente')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al actualizar el cliente!',
+        title: error,
         showConfirmButton: false,
         timer: 2000
       })

@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import Swal from 'sweetalert2'
 import { Container, Form, InnerForm, WrapInput } from '../../components'
 import { CUSTOMER_CREATE } from '../../mutations/customer'
+import { graphError } from '../../lib/graphError'
 
 const CreateCustomerView = ({ me }) => {
   const { register, handleSubmit } = useForm()
@@ -22,11 +23,12 @@ const CreateCustomerView = ({ me }) => {
         Router.push('/cliente')
       }, 2000)
     },
-    onError: () => {
+    onError: (err) => {
+      const error = graphError(err)
       Swal.fire({
         position: 'bottom-end',
         icon: 'error',
-        title: 'Hubo un error al crear el cliente!',
+        title: err,
         showConfirmButton: false,
         timer: 2000
       })
