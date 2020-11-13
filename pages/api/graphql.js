@@ -5,6 +5,7 @@ const context = require('../../api/context')
 const schemaDirectives = require('../../api/directives')
 
 const apolloServer = new ApolloServer({
+  cors: false,
   typeDefs,
   resolvers,
   context,
