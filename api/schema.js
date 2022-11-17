@@ -17,6 +17,7 @@ const typeDefs = gql`
 
   type Mutation {
     login(username: String!, password: String!): Me
+    loginV2(username: String!, password: String!): Me
 
     #Organization
     createOrganization(organization: OrganizationInput!): Organization

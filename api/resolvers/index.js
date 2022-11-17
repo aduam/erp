@@ -18,7 +18,7 @@ const {
 const { createOrganization, organization } = require('./organization')
 const { createMarket } = require('./market')
 const { createCollaborator, createRole, updateCollaborator, removeCollaborator, resetPassword, resetMePassword } = require('./collaborator')
-const { login, me } = require('./me')
+const { login, me, loginV2 } = require('./me')
 const { createProvider, removeProvider, editProvider } = require('./provider')
 const { customerCreate, customerUpdate, customerRemove } = require('./customer')
 const { reports } = require('./reports')
@@ -53,6 +53,7 @@ const resolvers = {
     createCollaborator,
     createRole,
     login,
+    loginV2,
     createProvider,
     removeProvider,
     editProvider,

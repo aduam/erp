@@ -5,8 +5,7 @@ const createCollaborator = async (_, args, ctx) => {
   const SALT = 7
   const collaborator = await Collaborator.create({ ...args.collaborator, id_role: args.id_role, id_market: args.id_market, active: true, id_organization: args.id_organization })
   if (!collaborator) throw Error('Error al crear el colaborador')
-  const pass = await bcrypt.hash(args.username, SALT)
-  const user = await User.create({ id: collaborator.id, username: args.username, password: pass })
+  const user = await User.create({ id: collaborator.id, username: args.username, password: args.username })
   if (!user) throw Error(`Error al crear el usuario: ${args.username}`)
   return collaborator
 }
@@ -38,10 +37,9 @@ const resetPassword = async (_, args) => {
   const SALT = 7
   const collaborator = await Collaborator.findOne({ where: { id: args.id_collaborator } })
   if (!collaborator) throw Error('Error al encontrar el colaborador')
-  const pass = await bcrypt.hash('studios', SALT)
   const user = await User.findOne({ where: { id: collaborator.id } })
   if (!user) throw Error(`Error en el colaborador: ${collaborator.names}`)
-  user.update({ password: pass })
+  user.update({ password: user.username })
   return collaborator
 }
 
@@ -49,10 +47,9 @@ const resetMePassword = async (_, args, ctx) => {
   const SALT = 7
   const collaborator = await Collaborator.findOne({ where: { id: ctx.payload.id } })
   if (!collaborator) throw Error('Error al encontrar el colaborador')
-  const pass = await bcrypt.hash(args.password, SALT)
   const user = await User.findOne({ where: { id: collaborator.id } })
   if (!user) throw Error(`Error en el colaborador: ${collaborator.names}`)
-  user.update({ password: pass })
+  user.update({ password: args.password })
   return collaborator
 }
 

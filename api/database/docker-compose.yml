@@ -4,9 +4,29 @@ services:
     image: "postgres" # use latest official postgres version
     environment:
       POSTGRES_USER: studios
-      POSTGRES_PASSWORD: studios
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: studios
+    networks:
+      - db-pg
     ports:
       - '5425:5432'
     volumes:
       - "./.data/db:/var/lib/postgresql/data/" # persist data even if container shuts down
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - db-pg
+    depends_on:
+      - database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+networks:
+  db-pg:
+    driver: bridge

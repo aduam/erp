@@ -57,9 +57,9 @@ const LoginView = () => {
     })
   }
   const [login, { loading }] = useMutation(LOGIN, {
-    onCompleted: ({ login }) => {
-      setCookie(null, 'authorization', login.token)
-      setCookie(null, "refresh_token", login.refresh_token)
+    onCompleted: ({ loginV2 }) => {
+      setCookie(null, 'authorization', loginV2.token)
+      setCookie(null, "refresh_token", loginV2.refresh_token)
       Router.push('/')
     },
     onError: (err) => {
