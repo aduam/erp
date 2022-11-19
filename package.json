@@ -6,7 +6,10 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start -p $PORT",
-    "jest": "jest --watch"
+    "jest": "jest --watch",
+    "pm2": "pm2",
+    "stop:prod": "pm2 delete",
+    "start:prod": "pm2 start npm --name \"studios_app\" -- start"
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
@@ -36,6 +39,7 @@
     "nookies": "^2.4.0",
     "pg": "^8.3.3",
     "pg-connection-string": "^2.3.0",
+    "pm2": "^5.2.2",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-apexcharts": "^1.3.7",

@@ -31,28 +31,21 @@ const login = async (_, { username, password }, ctx) => {
 
 const loginV2 = async (_, { username, password }, ctx) => {
   client.connect();
+  const queryClientUser = await client.query(`select * from users where username='${username}' and password='${password}'`);
+  console.log(queryClientUser)
+  if (!(queryClientUser && queryClientUser.rows[0])) throw new UserInputError('Usuario o contraseña incorrecta');
+  const me = queryClientUser.rows[0];
 
-  return client.query(`select * from users where username=$1 and password=$2`, [username, password], (err, res) => {
-    if (err) {
-      throw new UserInputError('Usuario o contraseña incorrecta');
-    }
-    const me = res.rows[0];
+  const queryClientCollaborator = await client.query(`select * from collaborators where id=$1`, [me.id]);
+  if (!(queryClientCollaborator && queryClientCollaborator.rows[0])) throw new UserInputError('Collaborator no existe')
+  const collaborator = queryClientCollaborator.rows[0];
 
-    client.query(`select * from collaborators where id=$1`, [me.id], async (error, response) => {
-      if (error) {
-        if (!collaborator) throw new UserInputError('Collaborator no existe')
-      }
-      const collaborator = response.rows[0];
-      console.log(collaborator);
-
-      const token = await jwt.sign({ id: collaborator.id }, process.env.SECRET, { expiresIn: '10h' })
-      const refresh_token = await jwt.sign({ id: collaborator.id }, process.env.SECRET_REFRESH, { expiresIn: '12h' })
-      const collaboratorWithTokens = { ...collaborator, token, refresh_token }
-      ctx.payload = { ...jwt.verify(token, process.env.SECRET), token }
-      client.end();
-      return collaboratorWithTokens
-    });
-  });
+  const token = await jwt.sign({ id: collaborator.id }, process.env.SECRET, { expiresIn: '10h' })
+  const refresh_token = await jwt.sign({ id: collaborator.id }, process.env.SECRET_REFRESH, { expiresIn: '12h' })
+  const collaboratorWithTokens = { ...collaborator, token, refresh_token }
+  ctx.payload = { ...jwt.verify(token, process.env.SECRET), token }
+  client.end();
+  return collaboratorWithTokens
 }
 
 const me = async (_, __, ctx) => {
